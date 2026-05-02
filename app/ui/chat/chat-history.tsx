@@ -22,7 +22,8 @@ export default function ChatHistory({ chats }: ChatHistoryProps) {
                   {chat.name}
                 </p>
                 <p className="mt-1 text-xs/5 text-gray-500">
-                  Created <span>{chat.created_date.toDateString()}</span>
+                  Created{" "}
+                  <span>{new Date(chat.created_date).toLocaleString()}</span>
                 </p>
               </div>
             </div>

@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import Button from "../button";
 import Header from "../header";
 import Input from "../input";
-import { createFileAction } from "@/lib/actions";
+// import { createFileAction } from "@/lib/actions";
 
 type CreateFilePopupProps = {
   isOpen: boolean;
@@ -49,7 +49,7 @@ export default function CreateFilePopup({
       alert("Provide all required information before creating the folder");
     } else {
       startTransition(async () => {
-        await createFileAction(inputsData);
+        // await createFileAction(inputsData);
         onClose();
       });
     }

@@ -1,17 +1,21 @@
 import "server-only";
+import { supabase } from "@/lib/supabase";
 
 import { sql } from "@vercel/postgres";
 import { User, File, Folder, Chat } from "./definitions";
 
 export async function fetchStandardUsers() {
-  try {
-    const data = await sql<User>`SELECT * FROM users WHERE role = 'standard'`;
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("role", "standard");
 
-    return data.rows;
-  } catch (error) {
+  if (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch users.");
   }
+
+  return data;
 }
 
 export async function createStandardUser(
@@ -22,25 +26,36 @@ export async function createStandardUser(
   password: string,
   job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager",
 ) {
-  try {
-    await sql<Folder>`INSERT INTO users (unique_id, first_name, last_name, email, password, role, job_position)
-      VALUES (${unique_id}, ${first_name}, ${last_name}, ${email}, ${password}, 'standard', ${job_position})
-      ON CONFLICT (id) DO NOTHING;`;
-  } catch (error) {
+  const { error } = await supabase.from("users").insert([
+    {
+      unique_id,
+      first_name,
+      last_name,
+      email,
+      password,
+      role: "standard",
+      job_position,
+    },
+  ]);
+
+  if (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to create a user.");
   }
 }
 
 export async function fetchAdminUsers() {
-  try {
-    const data = await sql<User>`SELECT * FROM users WHERE role = 'admin'`;
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("role", "admin");
 
-    return data.rows;
-  } catch (error) {
-    console.error("Database Error:", error);
+  if (error) {
+    console.error(error);
     throw new Error("Failed to fetch users.");
   }
+
+  return data;
 }
 
 export async function createFolder(
@@ -49,37 +64,45 @@ export async function createFolder(
   color_hex: string,
   parent_id: string | null,
 ) {
-  try {
-    await sql<Folder>`INSERT INTO folders (unique_id, name, color_hex, parent_id)
-    VALUES (${unique_id}, ${name}, ${color_hex}, ${parent_id ?? null})
-      ON CONFLICT (unique_id) DO NOTHING;`;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error(`Failed to create folder: ${error}`);
+  const { error } = await supabase.from("folders").insert([
+    {
+      unique_id,
+      name,
+      color_hex,
+      parent_id,
+    },
+  ]);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to create folder.");
   }
 }
 
 export async function fetchChatHistory() {
-  try {
-    const data = await sql<Chat>`SELECT * FROM chats`;
+  const { data, error } = await supabase.from("chats").select("*");
 
-    return data.rows;
-  } catch (error) {
-    console.error("Database Error:", error);
+  if (error) {
+    console.error(error);
     throw new Error("Failed to fetch chat history.");
   }
+
+  return data;
 }
 
 export async function fetchChatById(unique_id: string) {
-  try {
-    const data =
-      await sql<Chat>`SELECT * FROM chats WHERE unique_id = ${unique_id}`;
+  const { data, error } = await supabase
+    .from("chats")
+    .select("*")
+    .eq("unique_id", unique_id)
+    .single();
 
-    return data.rows[0];
-  } catch (error) {
-    console.error("Database Error:", error);
+  if (error) {
+    console.error(error);
     throw new Error("Failed to fetch chat.");
   }
+
+  return data;
 }
 
 export async function addMessage(
@@ -88,74 +111,48 @@ export async function addMessage(
   role: string,
   chatId: string,
 ) {
-  try {
-    await sql<Chat>`UPDATE chats SET messages = COALESCE(messages, '[]'::jsonb) || jsonb_build_array(
-      jsonb_build_object(
-        'id', ${id}::text,
-        'message', ${message}::text,
-        'role', ${role}::text
-        )
-        )
-        WHERE unique_id = ${chatId}`;
-    return { success: true };
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error(`Failed to add message: ${error}`);
+  const { data: chat, error: fetchError } = await supabase
+    .from("chats")
+    .select("messages")
+    .eq("unique_id", chatId)
+    .single();
+
+  if (fetchError) throw fetchError;
+
+  const currentMessages = chat.messages || [];
+  const updatedMessages = [...currentMessages, { id, message, role }];
+
+  const { error } = await supabase
+    .from("chats")
+    .update({ messages: updatedMessages })
+    .eq("unique_id", chatId);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to add message.");
   }
+
+  return { success: true };
 }
 
 export async function deleteChat(unique_id: string) {
-  try {
-    await sql`DELETE FROM chats WHERE unique_id = ${unique_id}`;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error(`Failed to delete chat: ${error}`);
+  const { error } = await supabase
+    .from("chats")
+    .delete()
+    .eq("unique_id", unique_id);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to delete chat.");
   }
 }
 
 export async function createChat(unique_id: string, name: string) {
-  try {
-    await sql<Folder>`INSERT INTO chats (unique_id, name)
-      VALUES (${unique_id}, ${name})
-      ON CONFLICT (id) DO NOTHING;`;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to create a chat.");
-  }
-}
+  const { error } = await supabase.from("chats").insert([{ unique_id, name }]);
 
-export async function createFile(
-  content: Buffer,
-  name: string,
-  folder_id: string | null,
-  type: string,
-  unique_id: string,
-) {
-  try {
-    await sql<File>`INSERT INTO files (content, name, folder_id, type, unique_id, id)
-    VALUES ("", ${name}, ${folder_id ?? null}, ${type}, ${unique_id},  ${unique_id})
-    ON CONFLICT (id) DO NOTHING;`;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error(`Failed to add file: ${error}`);
-  }
-}
-
-export async function fetchFiles(unique_id: string) {
-  try {
-    if (unique_id === "") {
-      const data = await sql<File>`SELECT * FROM files WHERE folder_id IS NULL`;
-
-      return data.rows;
-    }
-
-    const data =
-      await sql<File>`SELECT * FROM files WHERE folder_id = ${unique_id}`;
-
-    return data.rows;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch files.");
+  if (error) {
+    console.error(error);
+    throw new Error(`Failed to create chat: ${error.message}`);
   }
 }
 
@@ -188,17 +185,5 @@ export async function fetchFolders(unique_id: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch folders.");
-  }
-}
-
-export async function fetchFileById(unique_id: string) {
-  try {
-    const file =
-      await sql<File>`SELECT * FROM files WHERE unique_id = ${unique_id}`;
-
-    return file.rows[0];
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch file.");
   }
 }
