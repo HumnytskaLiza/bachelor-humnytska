@@ -3,11 +3,13 @@ export type User = {
   first_name: string;
   last_name: string;
   email: string;
+  phone: string;
   password: string;
   created_date: Date;
   unique_id: string;
   role: "admin" | "standard";
   job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
+  level: "Trainee" | "Junior" | "Middle" | "Senior";
 };
 
 export type File = {
@@ -55,6 +57,7 @@ export type InputsDataUser = {
   email: string;
   password: string;
   job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
+  level: "Trainee" | "Junior" | "Middle" | "Senior";
 };
 
 export type InputsDataChat = {
@@ -95,3 +98,5 @@ export type KnowledgeDataProps = {
 };
 
 export type AssistantPageProps = { params: Promise<{ unique_id: string }> };
+
+export type EmployeePageProps = { params: Promise<{ unique_id: string }> };

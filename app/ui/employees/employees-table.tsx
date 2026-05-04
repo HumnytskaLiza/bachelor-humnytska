@@ -1,35 +1,59 @@
-import { EmployeesTableProps } from "@/lib/definitions";
-import Button from "../button";
+"use client";
 
-export default async function EmployeesTable({ users }: EmployeesTableProps) {
+import { User } from "@/lib/definitions";
+import Button from "../button";
+import useSWR from "swr";
+import Link from "next/link";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+export default function EmployeesTable() {
+  const { data } = useSWR<User[]>("/api/user/standard", fetcher, {
+    refreshInterval: 2000,
+  });
+
   return (
-    <ul role="list" className="divide-y divide-gray-100">
-      {users.map((user) => (
-        <li
-          key={user.email}
-          className="flex justify-between gap-6 items-center"
-        >
-          <div className="flex justify-between gap-6 w-full px-5 py-3">
-            <div className="flex gap-x-4">
-              <div className="flex-auto">
-                <p className="text-sm/6 font-semibold text-gray-900">
-                  {user.first_name} {user.last_name}
-                </p>
-                <p className="mt-1 truncate text-xs/5 text-gray-500">
-                  {user.email}
-                </p>
+    <div className="h-full">
+      {data?.length !== 0 && (
+        <ul role="list" className="divide-y divide-gray-100">
+          {data?.map((user) => (
+            <li
+              key={user.email}
+              className="flex justify-between gap-6 items-center"
+            >
+              <div className="flex justify-between gap-6 w-full px-5 py-3">
+                <div className="flex gap-x-4">
+                  <div className="flex-auto">
+                    <p className="text-sm/6 font-semibold text-gray-900">
+                      {user.first_name} {user.last_name}
+                    </p>
+                    <p className="mt-1 truncate text-xs/5 text-gray-500">
+                      {user.email}
+                    </p>
+                  </div>
+                </div>
+                <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                  <p className="text-sm/6 text-gray-900">
+                    {user.level} {user.job_position}
+                  </p>
+                  <p className="mt-1 text-xs/5 text-gray-500">
+                    Added{" "}
+                    <span>{new Date(user.created_date).toLocaleString()}</span>
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-              <p className="text-sm/6 text-gray-900">{user.job_position}</p>
-              <p className="mt-1 text-xs/5 text-gray-500">
-                Added <span>{user.created_date.toDateString()}</span>
-              </p>
-            </div>
-          </div>
-          <Button text="View" type="main" buttonType="button" />
-        </li>
-      ))}
-    </ul>
+              <Link href={`/employees/${user.unique_id}`}>
+                <Button text="View" type="main" buttonType="button" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+      {data?.length === 0 && (
+        <div className="flex flex-col gap-4 text-center font-medium text-gray-500 h-[90%] justify-center">
+          <span>No employees have been added yet...</span>
+        </div>
+      )}
+    </div>
   );
 }

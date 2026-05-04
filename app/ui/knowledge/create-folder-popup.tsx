@@ -25,7 +25,9 @@ export default function CreateFolderPopup({
     parent_id: unique_id ? unique_id : null,
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
     setInputsData((data) => ({ ...data, [name]: value }));
     console.log(inputsData);

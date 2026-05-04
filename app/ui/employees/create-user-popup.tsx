@@ -17,9 +17,12 @@ export default function CreateUserPopup({
     email: "",
     password: "12345",
     job_position: "Developer",
+    level: "Trainee",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
     setInputsData((data) => ({ ...data, [name]: value }));
     console.log(inputsData);
@@ -90,6 +93,7 @@ export default function CreateUserPopup({
                 <Input
                   required={true}
                   name={"job_position"}
+                  value={inputsData.job_position}
                   onChange={handleInputChange}
                   options={[
                     "Developer",
@@ -98,6 +102,13 @@ export default function CreateUserPopup({
                     "QA",
                     "Project Manager",
                   ]}
+                />
+                <Input
+                  required={true}
+                  name={"level"}
+                  value={inputsData.level}
+                  onChange={handleInputChange}
+                  options={["Trainee", "Junior", "Middle", "Senior"]}
                 />
               </div>
             </div>

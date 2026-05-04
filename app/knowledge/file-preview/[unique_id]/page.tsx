@@ -1,23 +1,16 @@
 import Header from "../../../ui/header";
-import UtilityBar from "@/app/ui/knowledge/utility-bar";
 import { KnowledgePageProps } from "@/lib/definitions";
-// import Breadcrumbs from "../ui/breadcrumbs";
-
-export const dynamic = "force-dynamic";
+import { fetchFileLinkById } from "@/lib/data";
 
 export default async function Page({ params }: KnowledgePageProps) {
   const { unique_id } = await params;
-  const data = await fetch(`http://localhost:3000/api/file/${unique_id}`);
 
-  const blob = await data.blob();
-  const url = URL.createObjectURL(blob);
+  const data = await fetchFileLinkById(unique_id);
 
   return (
     <div>
       <Header name="📔 Knowledge Base" type="header" />
-      {/* <Breadcrumbs url="/knowledge" /> */}
-      <UtilityBar />
-      <iframe src={url} style={{ width: "100%", height: "100vh" }} />
+      <iframe src={data.path} style={{ width: "100%", height: "100%" }} />
     </div>
   );
 }

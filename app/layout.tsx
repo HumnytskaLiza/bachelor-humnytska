@@ -26,7 +26,7 @@ export default function RootLayout({
               <SideNav />
             </aside>
           )}
-          <div className="flex flex-col w-full h-full">
+          <div className="flex flex-col w-full h-screen">
             {!hideNavbar && <Navbar />}
             <div className={`${styles.padding}`}>{children}</div>
           </div>

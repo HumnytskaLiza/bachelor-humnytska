@@ -1,9 +1,6 @@
 import "server-only";
 import { supabase } from "@/lib/supabase";
 
-import { sql } from "@vercel/postgres";
-import { User, File, Folder, Chat } from "./definitions";
-
 export async function fetchStandardUsers() {
   const { data, error } = await supabase
     .from("users")
@@ -25,6 +22,7 @@ export async function createStandardUser(
   email: string,
   password: string,
   job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager",
+  level: "Trainee" | "Junior" | "Middle" | "Senior",
 ) {
   const { error } = await supabase.from("users").insert([
     {
@@ -35,6 +33,7 @@ export async function createStandardUser(
       password,
       role: "standard",
       job_position,
+      level,
     },
   ]);
 
@@ -42,6 +41,21 @@ export async function createStandardUser(
     console.error("Database Error:", error);
     throw new Error("Failed to create a user.");
   }
+}
+
+export async function fetchUserById(unique_id: string) {
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("unique_id", unique_id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to fetch user.");
+  }
+
+  return data;
 }
 
 export async function fetchAdminUsers() {
@@ -156,34 +170,113 @@ export async function createChat(unique_id: string, name: string) {
   }
 }
 
+export async function addFileToStorage(
+  name: string,
+  file: File,
+  unique_id: string,
+  folder_id: string | null,
+) {
+  const storagePath = process.env.SUPABASE_STORAGE_PATH!;
+
+  if (!storagePath) throw new Error("Missing storage path");
+
+  const filePath = `${storagePath}/${name}`;
+
+  const { data, error } = await supabase.storage
+    .from("Knowledge")
+    .upload(name, file);
+
+  if (error) {
+    console.error("UPLOAD ERROR:", error);
+    throw error;
+  }
+
+  console.log("UPLOAD SUCCESS:", data);
+
+  createFileMetadata(name, unique_id, "Knowldege", filePath, folder_id);
+}
+
+export async function createFileMetadata(
+  name: string,
+  unique_id: string,
+  bucket: string,
+  path: string,
+  folder_id: string | null,
+) {
+  const { error } = await supabase
+    .from("files")
+    .insert([{ name, unique_id, bucket, path, folder_id }]);
+
+  if (error) {
+    console.error(error);
+    throw new Error(`Failed to create chat: ${error.message}`);
+  }
+}
+
 export async function fetchFolders(unique_id: string) {
   try {
     if (unique_id === "") {
-      const folders =
-        await sql<Folder>`SELECT * FROM folders WHERE parent_id IS NULL`;
+      const { data: folders, error: foldersError } = await supabase
+        .from("folders")
+        .select("*")
+        .is("parent_id", null);
 
-      const files =
-        await sql<Folder>`SELECT * FROM files WHERE folder_id IS NULL`;
+      const { data: files, error: filesError } = await supabase
+        .from("files")
+        .select("*")
+        .is("folder_id", null);
 
-      return { current: null, folders: folders.rows, files: files.rows };
+      if (foldersError || filesError) {
+        console.error(foldersError || filesError);
+        throw new Error("Failed to fetch folders.");
+      }
+
+      return { current: null, folders, files };
     }
 
-    const folder =
-      await sql<Folder>`SELECT * FROM folders WHERE unique_id = ${unique_id}`;
+    const { data: folder, error: folderError } = await supabase
+      .from("folders")
+      .select("*")
+      .eq("unique_id", unique_id)
+      .single();
 
-    const folders =
-      await sql<Folder>`SELECT * FROM folders WHERE parent_id = ${unique_id}`;
+    const { data: folders, error: foldersError } = await supabase
+      .from("folders")
+      .select("*")
+      .eq("parent_id", unique_id);
 
-    const files =
-      await sql<File>`SELECT * FROM files WHERE folder_id = ${unique_id}`;
+    const { data: files, error: filesError } = await supabase
+      .from("files")
+      .select("*")
+      .eq("folder_id", unique_id);
+
+    if (folderError || foldersError || filesError) {
+      console.error(folderError || foldersError || filesError);
+      throw new Error("Failed to fetch folders.");
+    }
 
     return {
-      current: folder.rows[0],
-      folders: folders.rows,
-      files: files.rows,
+      current: folder,
+      folders,
+      files,
     };
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch folders.");
   }
+}
+
+export async function fetchFileLinkById(unique_id: string) {
+  const { data, error } = await supabase
+    .from("files")
+    .select("*")
+    .eq("unique_id", unique_id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to fetch file metadata by id.");
+  }
+
+  return data;
 }

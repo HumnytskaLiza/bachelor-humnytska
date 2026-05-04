@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import Button from "../button";
 import Header from "../header";
 import Input from "../input";
-// import { createFileAction } from "@/lib/actions";
+import { addFileToStorageAction } from "@/lib/actions";
 
 type CreateFilePopupProps = {
   isOpen: boolean;
@@ -29,19 +29,21 @@ export default function CreateFilePopup({
     folder_id: unique_id ?? null,
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, type, files, value } = e.target;
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const target = e.target;
 
-    if (type === "file") {
+    if (target instanceof HTMLInputElement && target.type === "file") {
       setInputsData((data) => ({
         ...data,
-        content: files?.[0] ?? null,
+        content: target.files?.[0] ?? null,
       }));
       return;
     }
 
+    const { name, value } = target;
     setInputsData((data) => ({ ...data, [name]: value }));
-    console.log(inputsData);
   };
 
   function validateData() {
@@ -49,7 +51,7 @@ export default function CreateFilePopup({
       alert("Provide all required information before creating the folder");
     } else {
       startTransition(async () => {
-        // await createFileAction(inputsData);
+        await addFileToStorageAction(inputsData);
         onClose();
       });
     }
@@ -76,7 +78,7 @@ export default function CreateFilePopup({
           >
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="flex flex-col gap-4 m-3">
-                <Header name={"📂 Add A New Folder"} type="subheader" />
+                <Header name={"📄 Add A New File"} type="subheader" />
                 <Input
                   required={true}
                   name={"name"}
@@ -89,12 +91,20 @@ export default function CreateFilePopup({
                   type={"file"}
                   onChange={handleInputChange}
                 />
+                {inputsData.content && (
+                  <div>
+                    Selected file:{" "}
+                    <span className="font-bold text-[#305c31]">
+                      {inputsData.content.name.toString()}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-2">
               <Button
                 onClick={validateData}
-                text={isPending ? "Creating..." : "Create"}
+                text={isPending ? "Adding..." : "Add"}
                 type="main"
                 buttonType="button"
               />

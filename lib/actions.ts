@@ -9,6 +9,7 @@ import {
   addMessage,
   deleteChat,
   createChat,
+  addFileToStorage,
 } from "./data";
 import { nanoid } from "nanoid";
 
@@ -18,11 +19,11 @@ type InputsDataFolder = {
   parent_id: string | null;
 };
 
-// type InputsDataFile = {
-//   content: File | null;
-//   name: string;
-//   folder_id: string | null;
-// };
+type InputsDataFile = {
+  content: File | null;
+  name: string;
+  folder_id: string | null;
+};
 
 type InputsDataUser = {
   first_name: string;
@@ -30,6 +31,7 @@ type InputsDataUser = {
   email: string;
   password: string;
   job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
+  level: "Trainee" | "Junior" | "Middle" | "Senior";
 };
 
 type InputsDataMessage = {
@@ -86,6 +88,7 @@ export async function createStandardUserAction(formData: InputsDataUser) {
     formData.email,
     formData.password,
     formData.job_position,
+    formData.level,
   );
 }
 
@@ -112,14 +115,15 @@ export async function createChatAction(formData: InputsDataChat) {
   await createChat(unique_id, formData.name);
 }
 
-// export async function createFileAction(formData: InputsDataFile) {
-//   const unique_id = nanoid(16);
+export async function addFileToStorageAction(formData: InputsDataFile) {
+  const unique_id = nanoid(16);
 
-//   if (formData.content === null) return;
+  if (formData.content === null) return;
 
-//   const arrayBuffer = await formData.content.arrayBuffer();
-//   const content = Buffer.from(arrayBuffer);
-//   const type = formData.content.type;
-
-//   await createFile(content, formData.name, formData.folder_id, type, unique_id);
-// }
+  await addFileToStorage(
+    formData.name,
+    formData.content,
+    unique_id,
+    formData.folder_id,
+  );
+}

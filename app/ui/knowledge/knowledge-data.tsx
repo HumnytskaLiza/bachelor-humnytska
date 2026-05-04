@@ -24,7 +24,7 @@ export default function KnowledgeData({ params }: KnowledgeDataProps) {
       folders: [],
       files: [],
     },
-    refreshInterval: 1000,
+    refreshInterval: 2000,
   });
 
   const folders = data?.folders;
@@ -41,7 +41,7 @@ export default function KnowledgeData({ params }: KnowledgeDataProps) {
       {folders?.map((element) => (
         <FolderElement
           isEmpty={element.has_children}
-          key={element.id}
+          key={element.unique_id}
           name={element.name}
           createdDate={element.created_date}
           uniqueId={element.unique_id}
@@ -51,7 +51,7 @@ export default function KnowledgeData({ params }: KnowledgeDataProps) {
 
       {files?.map((element) => (
         <FileElement
-          key={element.id}
+          key={element.unique_id}
           name={element.name}
           createdDate={element.created_date}
           uniqueId={element.unique_id}
@@ -60,8 +60,8 @@ export default function KnowledgeData({ params }: KnowledgeDataProps) {
 
       {folders?.length === 0 && files?.length === 0 && (
         <div className="flex flex-col gap-4 text-center font-medium text-gray-500">
-          <span>No files has been added yet...</span>
-          <span>Create a new folder or add a file here</span>
+          <span>No files have been added yet...</span>
+          <span>Create a new folder or add a file.</span>
         </div>
       )}
     </div>

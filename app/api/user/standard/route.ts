@@ -15,6 +15,7 @@ const schema = z.object({
     "QA",
     "Project Manager",
   ]),
+  level: z.enum(["Trainee", "Junior", "Middle", "Senior"]),
 });
 
 export async function GET() {
@@ -38,8 +39,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 });
     }
 
-    const { unique_id, first_name, last_name, email, password, job_position } =
-      parsed.data;
+    const {
+      unique_id,
+      first_name,
+      last_name,
+      email,
+      password,
+      job_position,
+      level,
+    } = parsed.data;
 
     await createStandardUser(
       unique_id,
@@ -48,6 +56,7 @@ export async function POST(req: Request) {
       email,
       password,
       job_position,
+      level,
     );
 
     return NextResponse.json({ success: true });

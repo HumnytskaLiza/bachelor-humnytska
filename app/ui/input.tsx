@@ -8,7 +8,9 @@ type InputProps = {
   style?: "round" | "square";
   options?: string[];
   value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => void;
   onKeyDown?: (e: { key: string }) => void;
 };
 
@@ -46,6 +48,8 @@ export default function Input({
         aria-label={name}
         name={name}
         className={styles.input}
+        value={value}
+        onChange={onChange}
       >
         {options.map((option, ind) => {
           return (

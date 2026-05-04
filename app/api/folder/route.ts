@@ -14,7 +14,7 @@ export async function GET() {
     const data = await fetchFolders("");
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Failed to fetch folders:", error);
+    console.error(error);
     return NextResponse.json(
       { message: "Failed to fetch folders." },
       { status: 500 },
