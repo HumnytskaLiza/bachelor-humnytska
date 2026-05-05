@@ -5,18 +5,13 @@ import Button from "../button";
 import Header from "../header";
 import Input from "../input";
 import { createFolderAction } from "@/lib/actions";
-
-type CreateFolderPopupProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  unique_id?: string;
-};
+import { CreatePopupProps } from "@/lib/definitions";
 
 export default function CreateFolderPopup({
   isOpen,
   onClose,
   unique_id,
-}: CreateFolderPopupProps) {
+}: CreatePopupProps) {
   const colors = ["#eae4da", "#4b607f", "#808bc5", "#ed773c"];
 
   const [inputsData, setInputsData] = useState({

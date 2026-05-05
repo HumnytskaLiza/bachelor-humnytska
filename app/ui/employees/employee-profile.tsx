@@ -1,12 +1,8 @@
 import Button from "../button";
 import Image from "next/image";
 import catPhoto from "@/public/cat.png";
-import { User } from "@/lib/definitions";
+import { EmployeeProfileProps } from "@/lib/definitions";
 import Card from "./card";
-
-type EmployeeProfileProps = {
-  user: User;
-};
 
 export default function EmployeeProfilePage({ user }: EmployeeProfileProps) {
   return (

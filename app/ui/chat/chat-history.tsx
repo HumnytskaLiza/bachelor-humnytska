@@ -6,6 +6,8 @@ import { Chat } from "@/lib/definitions";
 import Button from "../button";
 import Link from "next/link";
 import DeleteChatPopup from "./delete-chat";
+import { ChatTableSkeleton } from "../skeletons";
+import NoDataComponent from "../no-data-component";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -14,15 +16,15 @@ export default function ChatHistory() {
 
   const handleClose = () => setIsOpen(false);
 
-  const { data } = useSWR<Chat[]>("/api/chat", fetcher, {
+  const { data, isLoading } = useSWR<Chat[]>("/api/chat", fetcher, {
     refreshInterval: 2000,
   });
 
+  const isNoData = !isLoading && data?.length === 0;
+
   return (
-    <div
-      className={`${data?.length === 0 ? "flex justify-center items-center h-[80%]" : ""}`}
-    >
-      {data?.length !== 0 && (
+    <div className="h-full">
+      {!isLoading && !isNoData && (
         <ul role="list" className="divide-y divide-gray-100">
           {data?.map((chat) => (
             <li
@@ -65,11 +67,10 @@ export default function ChatHistory() {
           ))}
         </ul>
       )}
-      {data?.length === 0 && (
-        <div className="flex flex-col gap-4 text-center font-medium text-gray-500 h-[90%] justify-center">
-          <span>No chats have been created yet...</span>
-        </div>
+      {isNoData && (
+        <NoDataComponent firstLine="No chats have been created yet..." />
       )}
+      {isLoading && <ChatTableSkeleton />}
     </div>
   );
 }

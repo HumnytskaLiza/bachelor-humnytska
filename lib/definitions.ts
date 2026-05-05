@@ -89,7 +89,7 @@ export type ChatHistoryProps = {
   chats: Chat[];
 };
 
-export type KnowledgePageProps = { params: Promise<{ unique_id: string }> };
+export type UniqueIdProps = { params: Promise<{ unique_id: string }> };
 
 export type KnowledgeDataProps = {
   params: {
@@ -97,6 +97,80 @@ export type KnowledgeDataProps = {
   };
 };
 
-export type AssistantPageProps = { params: Promise<{ unique_id: string }> };
+export type UtilityBarProps = {
+  unique_id?: string;
+};
 
-export type EmployeePageProps = { params: Promise<{ unique_id: string }> };
+export type FolderResponse = {
+  current: Folder | null;
+  folders: Folder[];
+  files: File[];
+};
+
+export type EmployeeProfileProps = {
+  user: User;
+};
+
+export type CardProps = {
+  header: string;
+  content: string;
+};
+
+export type CreatePopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  unique_id?: string;
+};
+
+export type FileElementProps = {
+  name: string;
+  createdDate: Date;
+  uniqueId: string;
+};
+
+export type FolderElementProps = {
+  name: string;
+  createdDate: Date;
+  uniqueId: string;
+  color_hex: string;
+  isEmpty: boolean;
+};
+
+export type ButtonProps = {
+  text?: string;
+  type: "main" | "secondary" | "delete";
+  buttonType: "button" | "submit";
+  disabled?: boolean;
+  svg?: string;
+  url?: string;
+  onClick?: () => void;
+};
+
+export type HeaderProps = {
+  name: string;
+  type: "header" | "subheader";
+};
+
+export type InputProps = {
+  name: string;
+  required: boolean;
+  placeholder?: string;
+  type?: "hidden" | "email" | "file";
+  style?: "round" | "square";
+  options?: string[];
+  value?: string;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => void;
+  onKeyDown?: (e: { key: string }) => void;
+};
+
+export type MessageProps = {
+  role: string;
+  content: string;
+};
+
+export type NoDataComponentProps = {
+  firstLine: string;
+  secondLine?: string;
+};

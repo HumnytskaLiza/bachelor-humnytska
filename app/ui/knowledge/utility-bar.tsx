@@ -4,10 +4,7 @@ import { useState } from "react";
 import CreateFolderPopup from "./create-folder-popup";
 import CreateFilePopup from "./create-file-popup";
 import Button from "../button";
-
-type UtilityBarProps = {
-  unique_id?: string;
-};
+import { UtilityBarProps } from "@/lib/definitions";
 
 export default function UtilityBar({ unique_id }: UtilityBarProps) {
   const [isFolderOpen, setIsFolderOpen] = useState(false);

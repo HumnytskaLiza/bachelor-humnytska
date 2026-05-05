@@ -1,4 +1,4 @@
-import { KnowledgePageProps } from "@/lib/definitions";
+import { UniqueIdProps } from "@/lib/definitions";
 
 import Header from "@/app/ui/header";
 import UtilityBar from "@/app/ui/knowledge/utility-bar";
@@ -7,7 +7,7 @@ import Folders from "@/app/ui/knowledge/knowledge-data";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({ params }: KnowledgePageProps) {
+export default async function Page({ params }: UniqueIdProps) {
   const { unique_id } = await params;
 
   return (

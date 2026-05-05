@@ -1,15 +1,7 @@
 "use client";
 
 import styles from "@/app/ui/modules/main.module.css";
-type ButtonProps = {
-  text?: string;
-  type: "main" | "secondary" | "delete";
-  buttonType: "button" | "submit";
-  disabled?: boolean;
-  svg?: string;
-  url?: string;
-  onClick?: () => void;
-};
+import { ButtonProps } from "@/lib/definitions";
 
 export default function Button({
   text,

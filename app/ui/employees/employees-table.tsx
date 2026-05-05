@@ -5,6 +5,7 @@ import Button from "../button";
 import useSWR from "swr";
 import Link from "next/link";
 import { EmployeeTableSkeleton } from "../skeletons";
+import NoDataComponent from "../no-data-component";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -53,9 +54,7 @@ export default function EmployeesTable() {
         </ul>
       )}
       {isNoData && (
-        <div className="flex flex-col gap-4 text-center font-medium text-gray-500 h-[90%] justify-center">
-          <span>No employees have been added yet...</span>
-        </div>
+        <NoDataComponent firstLine="No employees have been added yet..." />
       )}
       {isLoading && <EmployeeTableSkeleton />}
     </div>

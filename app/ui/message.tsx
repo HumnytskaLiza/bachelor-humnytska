@@ -1,7 +1,4 @@
-type MessageProps = {
-  role: string;
-  content: string;
-};
+import { MessageProps } from "@/lib/definitions";
 
 export default function MessageComponent({ role, content }: MessageProps) {
   return (

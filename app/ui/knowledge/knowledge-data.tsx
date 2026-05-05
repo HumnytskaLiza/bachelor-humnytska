@@ -1,18 +1,13 @@
 "use client";
 
 import useSWR, { Key } from "swr";
-import { Folder, File, KnowledgeDataProps } from "@/lib/definitions";
+import { FolderResponse, KnowledgeDataProps } from "@/lib/definitions";
 import FolderElement from "./folder-element";
 import FileElement from "./file-element";
-import { FileSkeleton, FolderSkeleton } from "../skeletons";
+import { KnowledgeDataSkeleton } from "../skeletons";
+import NoDataComponent from "../no-data-component";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-type FolderResponse = {
-  current: Folder | null;
-  folders: Folder[];
-  files: File[];
-};
 
 export default function KnowledgeData({ params }: KnowledgeDataProps) {
   const keyFolder: Key = params.unique_id
@@ -56,24 +51,13 @@ export default function KnowledgeData({ params }: KnowledgeDataProps) {
       ))}
 
       {isNoData && (
-        <div className="flex flex-col gap-4 text-center font-medium text-gray-500">
-          <span>No files have been added yet...</span>
-          <span>Create a new folder or add a file.</span>
-        </div>
+        <NoDataComponent
+          firstLine="No files have been added yet..."
+          secondLine="Create a new folder or add a file."
+        />
       )}
 
-      {isLoading && !isNoData && (
-        <>
-          <FolderSkeleton />
-          <FolderSkeleton />
-          <FolderSkeleton />
-          <FolderSkeleton />
-          <FileSkeleton />
-          <FileSkeleton />
-          <FileSkeleton />
-          <FileSkeleton />
-        </>
-      )}
+      {isLoading && !isNoData && <KnowledgeDataSkeleton />}
     </div>
   );
 }

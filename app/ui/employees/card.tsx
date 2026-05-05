@@ -1,7 +1,4 @@
-type CardProps = {
-  header: string;
-  content: string;
-};
+import { CardProps } from "@/lib/definitions";
 
 export default function Card({ header, content }: CardProps) {
   return (
