@@ -1,8 +1,8 @@
 import Header from "../../../ui/header";
-import { KnowledgePageProps } from "@/lib/definitions";
+import { UniqueIdProps } from "@/lib/definitions";
 import { fetchFileLinkById } from "@/lib/data";
 
-export default async function Page({ params }: KnowledgePageProps) {
+export default async function Page({ params }: UniqueIdProps) {
   const { unique_id } = await params;
 
   const data = await fetchFileLinkById(unique_id);
