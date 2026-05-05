@@ -4,17 +4,20 @@ import { User } from "@/lib/definitions";
 import Button from "../button";
 import useSWR from "swr";
 import Link from "next/link";
+import { EmployeeTableSkeleton } from "../skeletons";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function EmployeesTable() {
-  const { data } = useSWR<User[]>("/api/user/standard", fetcher, {
+  const { data, isLoading } = useSWR<User[]>("/api/user/standard", fetcher, {
     refreshInterval: 2000,
   });
 
+  const isNoData = !isLoading && data?.length === 0;
+
   return (
     <div className="h-full">
-      {data?.length !== 0 && (
+      {!isLoading && !isNoData && (
         <ul role="list" className="divide-y divide-gray-100">
           {data?.map((user) => (
             <li
@@ -49,11 +52,12 @@ export default function EmployeesTable() {
           ))}
         </ul>
       )}
-      {data?.length === 0 && (
+      {isNoData && (
         <div className="flex flex-col gap-4 text-center font-medium text-gray-500 h-[90%] justify-center">
           <span>No employees have been added yet...</span>
         </div>
       )}
+      {isLoading && <EmployeeTableSkeleton />}
     </div>
   );
 }

@@ -26,11 +26,6 @@ const links = [
     href: "/journeys",
     label: "journeys",
   },
-  {
-    name: "Calendar",
-    href: "/calendar",
-    label: "calendar",
-  },
 ];
 
 export default function NavLinks() {
