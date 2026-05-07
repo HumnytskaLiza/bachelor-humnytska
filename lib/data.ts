@@ -116,7 +116,33 @@ export async function fetchChatById(unique_id: string) {
     throw new Error("Failed to fetch chat.");
   }
 
-  return data;
+  const messages = await fetchChatMessages(unique_id);
+
+  return { chat: data, messages: messages };
+}
+
+async function fetchChatMessages(unique_id: string) {
+  const { data, error } = await supabase
+    .from("messages")
+    .select("*")
+    .eq("chat_id", unique_id)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to fetch chat history.");
+  }
+
+  return data.map((message) => ({
+    id: message.id,
+    role: message.role,
+    parts: [
+      {
+        type: "text",
+        text: message.content,
+      },
+    ],
+  }));
 }
 
 export async function addMessage(
@@ -175,6 +201,7 @@ export async function addFileToStorage(
   file: File,
   unique_id: string,
   folder_id: string | null,
+  embedding?: Array<number>,
 ) {
   const storagePath = process.env.SUPABASE_STORAGE_PATH!;
 
@@ -194,6 +221,7 @@ export async function addFileToStorage(
   console.log("UPLOAD SUCCESS:", data);
 
   createFileMetadata(name, unique_id, "Knowldege", filePath, folder_id);
+  // createEmbeddings(content, embedding, file_id);
 }
 
 export async function createFileMetadata(
@@ -206,6 +234,23 @@ export async function createFileMetadata(
   const { error } = await supabase
     .from("files")
     .insert([{ name, unique_id, bucket, path, folder_id }]);
+
+  if (error) {
+    console.error(error);
+    throw new Error(`Failed to create chat: ${error.message}`);
+  }
+}
+
+export async function createEmbeddings(
+  content: string,
+  embedding: Array<number>,
+  file_id: string,
+) {
+  const { error } = await supabase.from("embeddings").insert({
+    content: content,
+    embedding: embedding,
+    file_id: file_id,
+  });
 
   if (error) {
     console.error(error);

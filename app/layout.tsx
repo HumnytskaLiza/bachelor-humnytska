@@ -20,15 +20,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${robotoSlab.className} antialiased`}>
-        <main className={`flex h-full w-full flex-row`}>
+        <main className={`flex h-screen w-full overflow-hidden`}>
           {!hideNavbar && (
-            <aside className="sticky top-0 h-screen">
+            <aside className="h-full shrink-0">
               <SideNav />
             </aside>
           )}
-          <div className="flex flex-col w-full h-screen">
-            {!hideNavbar && <Navbar />}
-            <div className={`${styles.padding}`}>{children}</div>
+          <div className="flex h-full flex-1 flex-col">
+            {!hideNavbar && (
+              <header className="sticky top-0 z-50">
+                <Navbar />
+              </header>
+            )}
+
+            <div className={`flex-1 overflow-y-auto ${styles.padding}`}>
+              {children}
+            </div>
           </div>
         </main>
       </body>

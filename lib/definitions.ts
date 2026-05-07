@@ -1,3 +1,5 @@
+import { UIMessage } from "ai";
+
 export type User = {
   id: number;
   first_name: string;
@@ -43,12 +45,12 @@ export type Chat = {
   name: string;
   created_date: Date;
   unique_id: string;
-  messages: Message[];
+  messages: UIMessage[];
 };
 
 export type ChatProps = {
   unique_id: string;
-  data: Message[];
+  data: UIMessage[];
 };
 
 export type InputsDataUser = {

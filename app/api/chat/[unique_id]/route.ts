@@ -21,9 +21,12 @@ export async function GET(
       return NextResponse.json({ message: "Missing id" }, { status: 400 });
     }
 
-    const chat = await fetchChatById(unique_id);
+    const chatData = await fetchChatById(unique_id);
 
-    return NextResponse.json(chat);
+    const messages = chatData.messages;
+    const chat = chatData.chat;
+
+    return NextResponse.json({ messages, chat });
   } catch (error) {
     console.error("Failed to fetch chat:", error);
     return NextResponse.json(
