@@ -1,21 +1,19 @@
 "use client";
 
-import { Card, CardContent } from "../card";
-import { ScrollArea } from "../scroll";
-import MessageComponent from "../message";
-import { ChatProps } from "@/lib/definitions";
-import Input from "../input";
-import Button from "../button";
 import { useState } from "react";
-import { Message } from "@/lib/definitions";
-import { addMessageAction } from "@/lib/actions";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
+import { Card, CardContent } from "../card";
+import { ScrollArea } from "../scroll";
+import Input from "../input";
+import Button from "../button";
+import MessageComponent from "../message";
+import { ChatProps } from "@/lib/definitions";
+import NoDataComponent from "../no-data-component";
 
 export default function Chat({ unique_id, data }: ChatProps) {
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { messages, sendMessage } = useChat({
+  const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: `/api/ai/chat?chatId=${unique_id}`,
     }),
@@ -38,43 +36,6 @@ export default function Chat({ unique_id, data }: ChatProps) {
     },
   });
 
-  // const saveMessage = async () => {
-  //   if (!input.trim()) return;
-
-  //   const newMessages = [...messages, { role: "user", message: input }];
-  //   setMessages(newMessages);
-
-  //   setInput("");
-  //   setLoading(true);
-
-  //   try {
-  //     await addMessageAction({
-  //       message: input,
-  //       role: "user",
-  //       chatId: unique_id,
-  //     });
-
-  //     setMessages((prev) => [
-  //       ...prev,
-  //       { role: "assistant", message: "test response from ai" },
-  //     ]);
-
-  //     await addMessageAction({
-  //       message: "test response from ai",
-  //       role: "assistant",
-  //       chatId: unique_id,
-  //     });
-  //   } catch (e) {
-  //     console.error("Error: ", e);
-  //     setMessages([
-  //       ...newMessages,
-  //       { role: "assistant", message: "Error occurred." },
-  //     ]);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   return (
     <div
       className="flex h-[calc(100vh-190px)] w-full items-center justify-center 
@@ -83,11 +44,21 @@ export default function Chat({ unique_id, data }: ChatProps) {
       <Card>
         <CardContent>
           <ScrollArea>
-            <div className="flex flex-col gap-3">
-              {messages.map((message) =>
-                message.parts.map((part, i) => {
-                  switch (part.type) {
-                    case "text":
+            <div
+              className={
+                messages.length === 0
+                  ? "flex justify-center items-center h-full"
+                  : "flex flex-col gap-3"
+              }
+            >
+              {messages.length === 0 && (
+                <NoDataComponent firstLine="What can I assist you with?" />
+              )}
+
+              {messages.length !== 0 &&
+                messages.map((message) =>
+                  message.parts.map((part, i) => {
+                    if (part.type === "text") {
                       return (
                         <MessageComponent
                           key={i}
@@ -95,12 +66,12 @@ export default function Chat({ unique_id, data }: ChatProps) {
                           content={part.text}
                         />
                       );
-                  }
-                }),
-              )}
-              {loading && (
-                <div className="text-sm text-gray-500">Thinking...</div>
-              )}
+                    }
+                  }),
+                )}
+              {status === "submitted" ? (
+                <MessageComponent role="assistant" content="Thinking..." />
+              ) : null}
             </div>
           </ScrollArea>
 
@@ -124,7 +95,9 @@ export default function Chat({ unique_id, data }: ChatProps) {
                 });
                 setInput("");
               }}
-              disabled={loading}
+              disabled={
+                status === "submitted" || status === "streaming" ? true : false
+              }
               text={"Send"}
               buttonType={"button"}
               type={"main"}

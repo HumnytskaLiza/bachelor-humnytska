@@ -170,6 +170,7 @@ export type InputProps = {
 export type MessageProps = {
   role: string;
   content: string;
+  agentRole?: string;
 };
 
 export type NoDataComponentProps = {

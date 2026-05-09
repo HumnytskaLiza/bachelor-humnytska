@@ -5,5 +5,9 @@ export function Card({ children }: { children: ReactNode }) {
 }
 
 export function CardContent({ children }: { children: ReactNode }) {
-  return <div className="flex flex-col h-full p-4 gap-4">{children}</div>;
+  return (
+    <div className="flex flex-col h-full p-4 md:px-10 xl:px-30 2xl:px-50 gap-4">
+      {children}
+    </div>
+  );
 }

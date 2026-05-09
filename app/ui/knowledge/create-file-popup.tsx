@@ -89,7 +89,7 @@ export default function CreateFilePopup({
                 {inputsData.content && (
                   <div>
                     Selected file:{" "}
-                    <span className="font-bold text-[#305c31]">
+                    <span className="font-bold text-[#305c31] wrap-break-word">
                       {inputsData.content.name.toString()}
                     </span>
                   </div>

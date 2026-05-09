@@ -1,5 +1,8 @@
 import "server-only";
 import { supabase } from "@/lib/supabase";
+import { generateEmbeddings } from "@/lib/ai/embeddings";
+import { nanoid } from "./utils";
+import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 
 export async function fetchStandardUsers() {
   const { data, error } = await supabase
@@ -188,7 +191,11 @@ export async function deleteChat(unique_id: string) {
 }
 
 export async function createChat(unique_id: string, name: string) {
-  const { error } = await supabase.from("chats").insert([{ unique_id, name }]);
+  const { error } = await supabase
+    .from("chats")
+    .insert([{ unique_id, name }])
+    .select()
+    .single();
 
   if (error) {
     console.error(error);
@@ -201,7 +208,6 @@ export async function addFileToStorage(
   file: File,
   unique_id: string,
   folder_id: string | null,
-  embedding?: Array<number>,
 ) {
   const storagePath = process.env.SUPABASE_STORAGE_PATH!;
 
@@ -220,8 +226,12 @@ export async function addFileToStorage(
 
   console.log("UPLOAD SUCCESS:", data);
 
-  createFileMetadata(name, unique_id, "Knowldege", filePath, folder_id);
-  // createEmbeddings(content, embedding, file_id);
+  await createFileMetadata(name, unique_id, "Knowldege", filePath, folder_id);
+
+  const loader = new WebPDFLoader(file);
+  const docs = await loader.load();
+
+  await createEmbeddings(docs[0].pageContent, unique_id);
 }
 
 export async function createFileMetadata(
@@ -241,20 +251,21 @@ export async function createFileMetadata(
   }
 }
 
-export async function createEmbeddings(
-  content: string,
-  embedding: Array<number>,
-  file_id: string,
-) {
-  const { error } = await supabase.from("embeddings").insert({
-    content: content,
-    embedding: embedding,
-    file_id: file_id,
-  });
+export async function createEmbeddings(content: string, file_id: string) {
+  const embeddings = await generateEmbeddings(content);
+
+  const rows = embeddings.map((embedding) => ({
+    content: embedding.content,
+    file_id,
+    unique_id: nanoid(16),
+    embedding: embedding.embedding,
+  }));
+
+  const { error } = await supabase.from("embeddings").insert(rows);
 
   if (error) {
     console.error(error);
-    throw new Error(`Failed to create chat: ${error.message}`);
+    throw new Error(`Failed to save embeddings: ${error.message}`);
   }
 }
 

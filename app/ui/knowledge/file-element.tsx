@@ -26,7 +26,7 @@ export default function FileElement({
         </div>
         <div className="flex flex-row items-end justify-between">
           <div className="flex flex-col">
-            <h3 className="text-md font-semibold text-gray-900 leading-tight uppercase">
+            <h3 className="text-sm font-semibold text-gray-900 leading-tight uppercase">
               {labelName}
             </h3>
             <p className="text-xs text-gray-500 mt-1">{labelDate}</p>

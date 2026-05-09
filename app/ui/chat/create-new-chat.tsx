@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import Button from "../button";
 import Header from "../header";
@@ -14,6 +15,8 @@ export default function CreateChatPopup({
   const [inputsData, setInputsData] = useState<InputsDataChat>({
     name: "",
   });
+
+  const router = useRouter();
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -58,7 +61,8 @@ export default function CreateChatPopup({
               <Button
                 onClick={() => {
                   startTransition(async () => {
-                    await createChatAction(inputsData);
+                    const unique_id = await createChatAction(inputsData);
+                    router.push(`/assistant/${unique_id}`);
                     onClose();
                   });
                 }}

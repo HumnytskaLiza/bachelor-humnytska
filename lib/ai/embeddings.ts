@@ -1,25 +1,57 @@
-import { OpenAIEmbeddings } from "@langchain/openai";
-import { MemoryVectorStore } from "langchain/vectorstores/memory";
+import { embedMany, embed } from "ai";
+import { supabase } from "../supabase";
 
-export const embeddings = new OpenAIEmbeddings({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const embeddingModel = "openai/text-embedding-ada-002";
 
-export const vectorStore = new MemoryVectorStore(embeddings);
-export const retriever = vectorStore.asRetriever();
+export type RetrievalResult = {
+  content: string;
+  file_id: string;
+  file_name?: string;
+  similarity?: number;
+};
 
-export function chunkText(text: string) {
-  return text.match(/.{1,1000}/g) || [];
-}
+const generateChunks = (input: string): string[] => {
+  return input
+    .trim()
+    .split(".")
+    .filter((i) => i !== "");
+};
 
-export async function embed(text: string) {
-  const res = await fetch("https://api-inference.huggingface.co/embeddings", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
-    },
-    body: JSON.stringify({ inputs: text }),
+export const generateEmbeddings = async (
+  value: string,
+): Promise<Array<{ embedding: number[]; content: string }>> => {
+  const chunks = generateChunks(value);
+  const { embeddings } = await embedMany({
+    model: embeddingModel,
+    values: chunks,
+  });
+  return embeddings.map((e, i) => ({ content: chunks[i], embedding: e }));
+};
+
+export const generateEmbedding = async (value: string): Promise<number[]> => {
+  const input = value.replaceAll("\\n", " ");
+  const { embedding } = await embed({
+    model: embeddingModel,
+    value: input,
+  });
+  return embedding;
+};
+
+export const findRelevantContent = async (
+  userQuery: string,
+): Promise<RetrievalResult[]> => {
+  const userQueryEmbedded = await generateEmbedding(userQuery);
+
+  const { data, error } = await supabase.rpc("match_documents", {
+    query_embedding: userQueryEmbedded,
+    match_threshold: 0.8,
+    match_count: 3,
   });
 
-  return await res.json();
-}
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to find similar content: ", error);
+  }
+
+  return data;
+};

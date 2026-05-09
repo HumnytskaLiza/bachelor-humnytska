@@ -3,6 +3,7 @@
 // import { signIn } from "@/auth";
 // import { AuthError } from "next-auth";
 // import { signOut } from "@/auth";
+
 import {
   createFolder,
   createStandardUser,
@@ -113,6 +114,8 @@ export async function createChatAction(formData: InputsDataChat) {
   const unique_id = nanoid(16);
 
   await createChat(unique_id, formData.name);
+
+  return unique_id;
 }
 
 export async function addFileToStorageAction(formData: InputsDataFile) {
