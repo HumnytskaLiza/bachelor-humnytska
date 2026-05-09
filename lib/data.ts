@@ -110,7 +110,7 @@ export async function fetchChatHistory() {
 export async function fetchChatById(unique_id: string) {
   const { data, error } = await supabase
     .from("chats")
-    .select("*")
+    .select("id, role, content")
     .eq("unique_id", unique_id)
     .single();
 
@@ -136,16 +136,7 @@ async function fetchChatMessages(unique_id: string) {
     throw new Error("Failed to fetch chat history.");
   }
 
-  return data.map((message) => ({
-    id: message.id,
-    role: message.role,
-    parts: [
-      {
-        type: "text",
-        text: message.content,
-      },
-    ],
-  }));
+  return data;
 }
 
 export async function addMessage(
