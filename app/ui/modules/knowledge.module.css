@@ -19,17 +19,12 @@
   position: relative;
 }
 
-.folder {
+.folder,
+.file,
+.journey {
   display: flex;
   flex-direction: column;
   height: 220px;
-  cursor: pointer;
-}
-
-.file {
-  display: flex;
-  flex-direction: column;
-  height: 200px;
   cursor: pointer;
 }
 

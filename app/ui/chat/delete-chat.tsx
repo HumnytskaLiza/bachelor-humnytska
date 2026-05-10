@@ -17,10 +17,10 @@ export default function DeleteChatPopup({
   if (!isOpen) return null;
 
   return (
-    <div className="relative z-10" onClick={onClose}>
+    <div className="relative z-51" onClick={onClose}>
       <div className="fixed inset-0 bg-gray-500/20 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in" />
       <div
-        className="fixed inset-0 z-10 w-screen overflow-y-auto"
+        className="fixed inset-0 z-51 w-screen overflow-y-auto"
         onClick={onClose}
       >
         <div
@@ -28,7 +28,7 @@ export default function DeleteChatPopup({
           onClick={onClose}
         >
           <form
-            className=" border border-gray-300 relative transform overflow-hidden rounded-l bg-white text-left sm:my-8 sm:w-full sm:max-w-lg"
+            className="relative transform overflow-hidden rounded-l text-left sm:my-8 sm:w-full sm:max-w-lg"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">

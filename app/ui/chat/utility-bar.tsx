@@ -5,15 +5,15 @@ import Button from "../button";
 import CreateChatPopup from "./create-new-chat";
 
 export default function UtilityBar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
 
-  const handleClose = () => setIsOpen(false);
-  const handleOpen = () => setIsOpen(true);
+  const handleCreateClose = () => setIsCreateOpen(false);
+  const handleCreateOpen = () => setIsCreateOpen(true);
 
   return (
     <div className="flex flex-row w-fit gap-2">
       <Button
-        onClick={handleOpen}
+        onClick={handleCreateOpen}
         text="Create Chat"
         buttonType="button"
         type="secondary"
@@ -26,7 +26,7 @@ export default function UtilityBar() {
         svg="M8.74999 1.75V1H7.24999V1.75V12.4393L3.28032 8.46967L2.74999 7.93934L1.68933 9L2.21966 9.53033L7.29288 14.6036C7.68341 14.9941 8.31657 14.9941 8.7071 14.6036L13.7803 9.53033L14.3107 9L13.25 7.93934L12.7197 8.46967L8.74999 12.4393V1.75Z"
       />
 
-      <CreateChatPopup isOpen={isOpen} onClose={handleClose} />
+      <CreateChatPopup isOpen={isCreateOpen} onClose={handleCreateClose} />
     </div>
   );
 }

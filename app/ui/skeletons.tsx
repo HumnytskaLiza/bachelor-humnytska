@@ -30,6 +30,7 @@ export function FileSkeleton() {
     </div>
   );
 }
+
 export function FolderSkeleton() {
   return (
     <div className={styles.folder}>
@@ -123,5 +124,57 @@ export function ChatTableSkeleton() {
         ))}
       </ul>
     </div>
+  );
+}
+
+export function JourneySkeleton() {
+  return (
+    <div className={styles.journey}>
+      <div
+        className="p-4 border border-gray-300 bg-gray-200 rounded-2xl h-full relative overflow-hidden
+                  flex flex-col justify-between w-full text-black"
+      >
+        <div className="flex h-full flex-col justify-between">
+          <div className="flex items-start justify-between">
+            <hr className="border-5 border-gray-300 rounded-2xl w-24" />
+            <hr className="border-5 border-white rounded-2xl w-24" />
+          </div>
+          <div className="relative flex flex-col gap-4 border border-gray-300 bg-white rounded-lg px-3 py-2">
+            <hr className="border-5 border-gray-200 rounded-2xl w-24" />
+            <hr className="border-5 border-gray-200 rounded-2xl w-24" />
+          </div>
+          <div className="flex items-center justify-between">
+            <hr className="border-5 border-white rounded-2xl w-24" />
+            <div
+              className="w-8 h-8 rounded-3xl bg-white border border-gray-300
+        flex justify-center items-center text-black"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function JourneyTableSkeleton() {
+  return (
+    <>
+      <JourneySkeleton />
+      <JourneySkeleton />
+      <JourneySkeleton />
+      <JourneySkeleton />
+      <JourneySkeleton />
+      <JourneySkeleton />
+    </>
   );
 }

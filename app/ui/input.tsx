@@ -34,7 +34,7 @@ export default function Input({
         id={name}
         aria-label={name}
         name={name}
-        className={styles.input}
+        className={`${styles.input} rounded-md`}
         value={value}
         onChange={onChange}
       >

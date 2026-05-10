@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { generateEmbeddings } from "@/lib/ai/embeddings";
 import { nanoid } from "./utils";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
+import { JobPosition, Level } from "./types";
 
 export async function fetchStandardUsers() {
   const { data, error } = await supabase
@@ -24,8 +25,8 @@ export async function createStandardUser(
   last_name: string,
   email: string,
   password: string,
-  job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager",
-  level: "Trainee" | "Junior" | "Middle" | "Senior",
+  job_position: JobPosition,
+  level: Level,
 ) {
   const { error } = await supabase.from("users").insert([
     {
@@ -101,7 +102,7 @@ export async function fetchChatHistory() {
 
   if (error) {
     console.error(error);
-    throw new Error("Failed to fetch chat history.");
+    throw new Error("Failed to fetch chat history.", error);
   }
 
   return data;
@@ -110,13 +111,13 @@ export async function fetchChatHistory() {
 export async function fetchChatById(unique_id: string) {
   const { data, error } = await supabase
     .from("chats")
-    .select("id, role, content")
+    .select("*")
     .eq("unique_id", unique_id)
     .single();
 
   if (error) {
     console.error(error);
-    throw new Error("Failed to fetch chat.");
+    throw new Error("Failed to fetch chat.", error);
   }
 
   const messages = await fetchChatMessages(unique_id);
@@ -133,7 +134,7 @@ async function fetchChatMessages(unique_id: string) {
 
   if (error) {
     console.error(error);
-    throw new Error("Failed to fetch chat history.");
+    throw new Error("Failed to fetch chat history.", error);
   }
 
   return data;
@@ -326,4 +327,36 @@ export async function fetchFileLinkById(unique_id: string) {
   }
 
   return data;
+}
+
+export async function fetchJourneys() {
+  const { data, error } = await supabase
+    .from("journeys")
+    .select("*")
+    .order("created_date", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to fetch journeys.", error);
+  }
+
+  return data;
+}
+
+export async function createJourney(
+  unique_id: string,
+  name: string,
+  job_position: JobPosition,
+  level: Level,
+  color_hex: string,
+  start_date: Date,
+) {
+  const { error } = await supabase
+    .from("journeys")
+    .insert([{ unique_id, name, job_position, level, color_hex, start_date }]);
+
+  if (error) {
+    console.error(error);
+    throw new Error(`Failed to create journey: ${error.message}`);
+  }
 }

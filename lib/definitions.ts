@@ -40,6 +40,16 @@ export type Message = {
   message: string;
 };
 
+export type Journey = {
+  unique_id: string;
+  name: string;
+  created_date: Date;
+  job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
+  level: "Trainee" | "Junior" | "Middle" | "Senior";
+  color_hex: string;
+  start_date: Date;
+};
+
 export type Chat = {
   id: number;
   name: string;
@@ -87,6 +97,10 @@ export type EmployeesTableProps = {
   users: User[];
 };
 
+export type JourneyTableProps = {
+  journeys: Journey[];
+};
+
 export type ChatHistoryProps = {
   chats: Chat[];
 };
@@ -124,6 +138,11 @@ export type CreatePopupProps = {
   unique_id?: string;
 };
 
+export type CreateJourneyPopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
 export type FileElementProps = {
   name: string;
   createdDate: Date;
@@ -157,7 +176,7 @@ export type InputProps = {
   name: string;
   required: boolean;
   placeholder?: string;
-  type?: "hidden" | "email" | "file";
+  type?: "hidden" | "email" | "file" | "date";
   style?: "round" | "square";
   options?: string[];
   value?: string;

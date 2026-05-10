@@ -28,7 +28,7 @@ export default function RootLayout({
           )}
           <div className="flex h-full flex-1 flex-col">
             {!hideNavbar && (
-              <header className="sticky top-0 z-50">
+              <header className="sticky top-0 z-49">
                 <Navbar />
               </header>
             )}

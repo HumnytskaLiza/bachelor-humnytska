@@ -11,8 +11,10 @@ import {
   deleteChat,
   createChat,
   addFileToStorage,
+  createJourney,
 } from "./data";
 import { nanoid } from "nanoid";
+import { Level, JobPosition } from "./types";
 
 type InputsDataFolder = {
   name: string;
@@ -31,8 +33,16 @@ type InputsDataUser = {
   last_name: string;
   email: string;
   password: string;
-  job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
-  level: "Trainee" | "Junior" | "Middle" | "Senior";
+  job_position: JobPosition;
+  level: Level;
+};
+
+type InputsDataJourney = {
+  name: string;
+  start_date: Date;
+  job_position: JobPosition;
+  level: Level;
+  color_hex: string;
 };
 
 type InputsDataMessage = {
@@ -90,6 +100,19 @@ export async function createStandardUserAction(formData: InputsDataUser) {
     formData.password,
     formData.job_position,
     formData.level,
+  );
+}
+
+export async function createJourneyAction(formData: InputsDataJourney) {
+  const unique_id = nanoid(16);
+
+  await createJourney(
+    unique_id,
+    formData.name,
+    formData.job_position,
+    formData.level,
+    formData.color_hex,
+    formData.start_date,
   );
 }
 
