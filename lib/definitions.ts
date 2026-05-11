@@ -40,6 +40,14 @@ export type Message = {
   message: string;
 };
 
+export type Task = {
+  unique_id: number;
+  name: string;
+  description: string;
+  deadline: Date;
+  created_date: Date;
+};
+
 export type Journey = {
   unique_id: string;
   name: string;
@@ -50,12 +58,20 @@ export type Journey = {
   start_date: Date;
 };
 
+export type JourneyDetailsProps = {
+  journey: Journey;
+};
+
 export type Chat = {
   id: number;
   name: string;
   created_date: Date;
   unique_id: string;
   messages: UIMessage[];
+};
+
+export type JourneyOverviewTableProps = {
+  unique_id: string;
 };
 
 export type ChatProps = {
@@ -113,6 +129,11 @@ export type KnowledgeDataProps = {
   };
 };
 
+export type JourneyOverviewDataProps = {
+  unique_id: string;
+  users: User[];
+};
+
 export type UtilityBarProps = {
   unique_id?: string;
 };
@@ -127,15 +148,34 @@ export type EmployeeProfileProps = {
   user: User;
 };
 
+export type JourneyOverviewProps = {
+  unique_id: string;
+  journey: Journey;
+};
+
 export type CardProps = {
   header: string;
   content: string;
+  background?: string;
 };
 
 export type CreatePopupProps = {
   isOpen: boolean;
   onClose: () => void;
   unique_id?: string;
+};
+
+export type CreateTaskPopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  unique_id: string;
+};
+
+export type AddUserPopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  unique_id: string;
+  users: User[];
 };
 
 export type CreateJourneyPopupProps = {
@@ -169,7 +209,7 @@ export type ButtonProps = {
 
 export type HeaderProps = {
   name: string;
-  type: "header" | "subheader";
+  type: "header" | "subheader" | "sectionName";
 };
 
 export type InputProps = {
@@ -179,7 +219,9 @@ export type InputProps = {
   type?: "hidden" | "email" | "file" | "date";
   style?: "round" | "square";
   options?: string[];
+  optionsWithId?: { label: string; value: string }[];
   value?: string;
+  dateLabel?: string;
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => void;

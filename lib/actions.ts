@@ -12,6 +12,8 @@ import {
   createChat,
   addFileToStorage,
   createJourney,
+  createTask,
+  updateUser,
 } from "./data";
 import { nanoid } from "nanoid";
 import { Level, JobPosition } from "./types";
@@ -53,6 +55,18 @@ type InputsDataMessage = {
 
 type InputsDataChat = {
   name: string;
+};
+
+type InputsDataTask = {
+  name: string;
+  description: string;
+  deadline: Date;
+  journey_id: string;
+};
+
+type InputsDataAssignUser = {
+  user_id: string;
+  journey_id: string;
 };
 
 // export async function authenticate(
@@ -152,4 +166,20 @@ export async function addFileToStorageAction(formData: InputsDataFile) {
     unique_id,
     formData.folder_id,
   );
+}
+
+export async function createTaskAction(formData: InputsDataTask) {
+  const unique_id = nanoid(16);
+
+  await createTask(
+    unique_id,
+    formData.name,
+    formData.description,
+    formData.deadline,
+    formData.journey_id,
+  );
+}
+
+export async function updateUserAction(formData: InputsDataAssignUser) {
+  await updateUser(formData.user_id, formData.journey_id);
 }

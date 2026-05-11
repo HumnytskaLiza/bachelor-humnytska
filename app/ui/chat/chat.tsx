@@ -75,7 +75,7 @@ export default function Chat({ unique_id, data }: ChatProps) {
             </div>
           </ScrollArea>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 mx-auto">
             <Input
               style="round"
               required={true}

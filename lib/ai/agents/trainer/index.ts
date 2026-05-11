@@ -17,7 +17,9 @@ export async function trainerAgent(input: string, chatHistory: string) {
 
     Use examples when appropriate.
     Use the provided context to answer.
-    If information is missing, say you do not know.
+    Use the provided context to answer.
+    If information is missing, say you do not know. 
+    Please, do not provide the answer without having the relevant context.
     `,
     ],
 

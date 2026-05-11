@@ -343,6 +343,49 @@ export async function fetchJourneys() {
   return data;
 }
 
+export async function fetchJourneyById(unique_id: string) {
+  const { data, error } = await supabase
+    .from("journeys")
+    .select("*")
+    .eq("unique_id", unique_id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to fetch journey by id.");
+  }
+
+  return data;
+}
+
+export async function fetchJourneyTasks(unique_id: string) {
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("journey_id", unique_id);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to fetch journey tasks.");
+  }
+
+  return data;
+}
+
+export async function fetchJourneyUsers(unique_id: string) {
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("journey_id", unique_id);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to fetch users assigned to the journey.");
+  }
+
+  return data;
+}
+
 export async function createJourney(
   unique_id: string,
   name: string,
@@ -358,5 +401,52 @@ export async function createJourney(
   if (error) {
     console.error(error);
     throw new Error(`Failed to create journey: ${error.message}`);
+  }
+}
+
+export async function createTask(
+  unique_id: string,
+  name: string,
+  description: string,
+  deadline: Date,
+  journey_id: string,
+) {
+  const { error } = await supabase
+    .from("tasks")
+    .insert([{ unique_id, name, description, deadline, journey_id }]);
+
+  if (error) {
+    console.error(error);
+    throw new Error(`Failed to create task: ${error.message}`);
+  }
+}
+
+export async function fetchUsersWithoutJourney() {
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .is("journey_id", null);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to fetch users.");
+  }
+
+  return data;
+}
+
+export async function updateUser(user_id: string, journey_id: string) {
+  const { error } = await supabase
+    .from("users")
+    .update({
+      journey_id,
+    })
+    .eq("unique_id", user_id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error(`Failed to update user: ${error.message}`);
   }
 }

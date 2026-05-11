@@ -8,26 +8,12 @@ export default function Input({
   type,
   value,
   options,
+  optionsWithId,
   style,
+  dateLabel,
   onChange,
 }: InputProps) {
-  return !options ? (
-    <input
-      required={required}
-      id={name}
-      name={name}
-      type={type}
-      aria-label={name}
-      placeholder={placeholder}
-      onChange={onChange}
-      value={value}
-      className={
-        style == "round"
-          ? `${styles.input} rounded-4xl`
-          : `${styles.input} rounded-md`
-      }
-    />
-  ) : (
+  return options ? (
     <div className="relative">
       <select
         required={required}
@@ -55,6 +41,54 @@ export default function Input({
       >
         <path d="M8.74999 1.75V1H7.24999V1.75V12.4393L3.28032 8.46967L2.74999 7.93934L1.68933 9L2.21966 9.53033L7.29288 14.6036C7.68341 14.9941 8.31657 14.9941 8.7071 14.6036L13.7803 9.53033L14.3107 9L13.25 7.93934L12.7197 8.46967L8.74999 12.4393V1.75Z"></path>
       </svg>
+    </div>
+  ) : optionsWithId ? (
+    <div className="relative">
+      <select
+        required={required}
+        id={name}
+        aria-label={name}
+        name={name}
+        className={`${styles.input} rounded-md`}
+        value={value}
+        onChange={onChange}
+      >
+        {optionsWithId.map((option) => {
+          return (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          );
+        })}
+      </select>
+      <svg
+        height="12"
+        strokeLinejoin="round"
+        viewBox="0 0 16 16"
+        width="12"
+        className="absolute top-3 right-3 fill-gray-400"
+      >
+        <path d="M8.74999 1.75V1H7.24999V1.75V12.4393L3.28032 8.46967L2.74999 7.93934L1.68933 9L2.21966 9.53033L7.29288 14.6036C7.68341 14.9941 8.31657 14.9941 8.7071 14.6036L13.7803 9.53033L14.3107 9L13.25 7.93934L12.7197 8.46967L8.74999 12.4393V1.75Z"></path>
+      </svg>
+    </div>
+  ) : (
+    <div className="flex flex-col gap-2 w-100">
+      {dateLabel && <div className="text-sm font-bold">{dateLabel}</div>}
+      <input
+        required={required}
+        id={name}
+        name={name}
+        type={type}
+        aria-label={name}
+        placeholder={placeholder}
+        onChange={onChange}
+        value={value}
+        className={
+          style == "round"
+            ? `${styles.input} rounded-4xl`
+            : `${styles.input} rounded-md`
+        }
+      />
     </div>
   );
 }

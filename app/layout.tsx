@@ -1,5 +1,5 @@
 "use client";
-import { geistSans, geistMono, robotoSlab, josefinSans } from "./ui/fonts";
+import { robotoSlab } from "./ui/fonts";
 import { usePathname } from "next/navigation";
 import styles from "@/app/ui/modules/main.module.css";
 import SideNav from "@/app/ui/sidenav";
@@ -28,7 +28,7 @@ export default function RootLayout({
           )}
           <div className="flex h-full flex-1 flex-col">
             {!hideNavbar && (
-              <header className="sticky top-0 z-49">
+              <header className="sticky top-0 z-0">
                 <Navbar />
               </header>
             )}

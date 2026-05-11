@@ -17,7 +17,8 @@ export async function hrAgent(input: string, chatHistory: string) {
       - communication standards
 
       Use the provided context to answer.
-      If information is missing, say you do not know.
+      If information is missing, say you do not know. 
+      Please, do not provide the answer without having the relevant context.
     `,
     ],
 

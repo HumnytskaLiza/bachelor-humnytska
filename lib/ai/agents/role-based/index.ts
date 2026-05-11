@@ -17,7 +17,8 @@ export async function roleBasedAgent(input: string, chatHistory: string) {
 
       Answer practically and concisely.
       Use the provided context to answer.
-      If information is missing, say you do not know.
+      If information is missing, say you do not know. 
+      Please, do not provide the answer without having the relevant context.
     `,
     ],
 

@@ -2,7 +2,7 @@ import Button from "../button";
 import Image from "next/image";
 import catPhoto from "@/public/cat.png";
 import { EmployeeProfileProps } from "@/lib/definitions";
-import Card from "./card";
+import DetailCard from "../detail-card";
 
 export default function EmployeeProfilePage({ user }: EmployeeProfileProps) {
   return (
@@ -37,10 +37,10 @@ export default function EmployeeProfilePage({ user }: EmployeeProfileProps) {
           />
         </div>
         <div className="mt-6 grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
-          <Card header="Job Position" content={user.job_position} />
-          <Card header="Level" content={user.level} />
-          <Card header="Email" content={user.email} />
-          <Card header="Phone" content={user.phone} />
+          <DetailCard header="Job Position" content={user.job_position} />
+          <DetailCard header="Level" content={user.level} />
+          <DetailCard header="Email" content={user.email} />
+          <DetailCard header="Phone" content={user.phone} />
         </div>
       </div>
     </div>
