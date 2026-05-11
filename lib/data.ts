@@ -450,3 +450,26 @@ export async function updateUser(user_id: string, journey_id: string) {
     throw new Error(`Failed to update user: ${error.message}`);
   }
 }
+
+export async function updateTask(
+  unique_id: string,
+  name: string,
+  description: string,
+  deadline: Date,
+) {
+  const { error } = await supabase
+    .from("tasks")
+    .update({
+      name,
+      description,
+      deadline,
+    })
+    .eq("unique_id", unique_id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error(`Failed to update task: ${error.message}`);
+  }
+}

@@ -4,23 +4,19 @@ import { useState, useTransition } from "react";
 import Button from "../../button";
 import Header from "../../header";
 import Input from "../../input";
-import { updateUserAction } from "@/lib/actions";
-import { AddUserPopupProps, User } from "@/lib/definitions";
+import { updateTaskAction } from "@/lib/actions";
+import { EditTaskPopupProps } from "@/lib/definitions";
 
-export default function AddUserPopup({
+export default function EditTaskPopup({
   isOpen,
   onClose,
-  unique_id,
-  users,
-}: AddUserPopupProps) {
-  const options = users.map((user: User) => ({
-    label: `${user.first_name}, ${user.email}`,
-    value: user.unique_id,
-  }));
-
+  task,
+}: EditTaskPopupProps) {
   const [inputsData, setInputsData] = useState({
-    user_id: users.length === 0 ? "" : options[0].value,
-    journey_id: unique_id,
+    unique_id: task.unique_id,
+    name: task.name,
+    description: task.description,
+    deadline: task.deadline,
   });
 
   const handleInputChange = (
@@ -32,11 +28,11 @@ export default function AddUserPopup({
   };
 
   function validateData() {
-    if (!inputsData.user_id) {
-      alert("Select the user");
+    if (!inputsData.name || !inputsData.deadline || !inputsData.description) {
+      alert("Provide all required information before updating a task");
     } else {
       startTransition(async () => {
-        await updateUserAction(inputsData);
+        await updateTaskAction(inputsData);
         onClose();
       });
     }
@@ -63,29 +59,36 @@ export default function AddUserPopup({
           >
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="flex flex-col gap-4 m-3">
-                <Header name={"🙎 Assign A User"} type="subheader" />
+                <Header name={"📋 Edit A Task"} type="subheader" />
                 <Input
                   required={true}
-                  name={"user_id"}
-                  value={inputsData.user_id}
+                  name={"name"}
                   onChange={handleInputChange}
-                  optionsWithId={options}
-                  disabled={users.length === 0 ? true : false}
+                  placeholder="Task Name"
+                  value={inputsData.name}
+                />
+                <Input
+                  required={true}
+                  name={"description"}
+                  onChange={handleInputChange}
+                  placeholder="Task Description"
+                  value={inputsData.description}
+                />
+                <Input
+                  required={true}
+                  type="date"
+                  name={"deadline"}
+                  value={inputsData.deadline?.toString()}
+                  dateLabel="Deadline:"
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-2">
               <Button
                 onClick={validateData}
-                disabled={users.length === 0 ? true : false}
-                text={
-                  users.length === 0
-                    ? "No Users Are Available"
-                    : isPending
-                      ? "Assigning..."
-                      : "Assign"
-                }
-                type={users.length === 0 ? "secondary" : "main"}
+                text={isPending ? "Updating..." : "Update"}
+                type="main"
                 buttonType="button"
               />
               <Button

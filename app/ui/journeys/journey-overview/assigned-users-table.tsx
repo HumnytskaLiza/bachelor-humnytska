@@ -4,7 +4,7 @@ import { User } from "@/lib/definitions";
 import Button from "../../button";
 import useSWR from "swr";
 import Link from "next/link";
-// import { EmployeeTableSkeleton } from "../skeletons";
+import { AssignedUsersTableSkeleton } from "../../skeletons";
 import NoDataComponent from "../../no-data-component";
 import { JourneyOverviewTableProps } from "@/lib/definitions";
 import Header from "../../header";
@@ -27,7 +27,10 @@ export default function AssignedUsersTable({
 
   return (
     <div className="h-full flex flex-col gap-3">
-      <Header type="sectionName" name={`🙎 Assigned Users: ${userCount}`} />
+      <Header
+        type="sectionName"
+        name={`🙎 Assigned Users: ${userCount === undefined ? "Loading..." : userCount}`}
+      />
       {!isLoading && !isNoData && (
         <ul role="list" className="divide-y divide-gray-100 px-4">
           {data?.map((user) => (
@@ -75,7 +78,7 @@ export default function AssignedUsersTable({
           <NoDataComponent firstLine="No employees have been assigned to this journey yet..." />
         </div>
       )}
-      {/* {isLoading && <EmployeeTableSkeleton />} */}
+      {isLoading && <AssignedUsersTableSkeleton />}
     </div>
   );
 }

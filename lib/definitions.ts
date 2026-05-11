@@ -41,7 +41,7 @@ export type Message = {
 };
 
 export type Task = {
-  unique_id: number;
+  unique_id: string;
   name: string;
   description: string;
   deadline: Date;
@@ -171,6 +171,12 @@ export type CreateTaskPopupProps = {
   unique_id: string;
 };
 
+export type EditTaskPopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  task: Task;
+};
+
 export type AddUserPopupProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -222,6 +228,7 @@ export type InputProps = {
   optionsWithId?: { label: string; value: string }[];
   value?: string;
   dateLabel?: string;
+  disabled?: boolean;
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => void;

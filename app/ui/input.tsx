@@ -11,6 +11,7 @@ export default function Input({
   optionsWithId,
   style,
   dateLabel,
+  disabled,
   onChange,
 }: InputProps) {
   return options ? (
@@ -52,6 +53,7 @@ export default function Input({
         className={`${styles.input} rounded-md`}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       >
         {optionsWithId.map((option) => {
           return (

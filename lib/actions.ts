@@ -14,6 +14,7 @@ import {
   createJourney,
   createTask,
   updateUser,
+  updateTask,
 } from "./data";
 import { nanoid } from "nanoid";
 import { Level, JobPosition } from "./types";
@@ -67,6 +68,13 @@ type InputsDataTask = {
 type InputsDataAssignUser = {
   user_id: string;
   journey_id: string;
+};
+
+type InputsDataAssignTask = {
+  unique_id: string;
+  name: string;
+  description: string;
+  deadline: Date;
 };
 
 // export async function authenticate(
@@ -182,4 +190,13 @@ export async function createTaskAction(formData: InputsDataTask) {
 
 export async function updateUserAction(formData: InputsDataAssignUser) {
   await updateUser(formData.user_id, formData.journey_id);
+}
+
+export async function updateTaskAction(formData: InputsDataAssignTask) {
+  await updateTask(
+    formData.unique_id,
+    formData.name,
+    formData.description,
+    formData.deadline,
+  );
 }
