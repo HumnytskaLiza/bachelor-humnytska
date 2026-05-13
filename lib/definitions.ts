@@ -136,6 +136,7 @@ export type JourneyOverviewDataProps = {
 
 export type UtilityBarProps = {
   unique_id?: string;
+  role: string;
 };
 
 export type FolderResponse = {
@@ -222,7 +223,7 @@ export type InputProps = {
   name: string;
   required: boolean;
   placeholder?: string;
-  type?: "hidden" | "email" | "file" | "date";
+  type?: "hidden" | "email" | "file" | "date" | "password";
   style?: "round" | "square";
   options?: string[];
   optionsWithId?: { label: string; value: string }[];

@@ -1,4 +1,7 @@
 import styles from "./modules/main.module.css";
+import Image from "next/image";
+import catPhoto from "@/public/cat.png";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
@@ -6,7 +9,7 @@ export default function Navbar() {
       <div
         className="flex w-full items-center gap-2 rounded-md
           bg-gray-50 px-5 text-sm font-medium md:flex-none 
-          md:justify-start md:px-5 h-14"
+          md:justify-between md:px-5 h-20"
       >
         <div className={styles.search}>
           <svg height="12" viewBox="0 0 16 16" width="12">
@@ -20,6 +23,16 @@ export default function Navbar() {
           </svg>
           <span className="text-gray-700 text-xs">Search</span>
         </div>
+        <Link
+          href="/profile"
+          className="h-12 rounded-full border-gray-300 border"
+        >
+          <Image
+            src={catPhoto}
+            alt="Avatar"
+            className="h-full w-full object-cover"
+          />
+        </Link>
       </div>
     </nav>
   );

@@ -1,8 +1,7 @@
 "use server";
 
-// import { signIn } from "@/auth";
-// import { AuthError } from "next-auth";
-// import { signOut } from "@/auth";
+import { createClient } from "./supabase/server";
+import { redirect } from "next/navigation";
 
 import {
   createFolder,
@@ -15,6 +14,7 @@ import {
   createTask,
   updateUser,
   updateTask,
+  getUserRole,
 } from "./data";
 import { nanoid } from "nanoid";
 import { Level, JobPosition } from "./types";
@@ -76,29 +76,6 @@ type InputsDataAssignTask = {
   description: string;
   deadline: Date;
 };
-
-// export async function authenticate(
-//   prevState: string | undefined,
-//   formData: FormData,
-// ) {
-//   try {
-//     await signIn("credentials", formData);
-//   } catch (error) {
-//     if (error instanceof AuthError) {
-//       switch (error.type) {
-//         case "CredentialsSignin":
-//           return "Invalid credentials.";
-//         default:
-//           return "Something went wrong.";
-//       }
-//     }
-//     throw error;
-//   }
-// }
-
-// export async function logOutAction() {
-//   await signOut({ redirectTo: "/login" });
-// }
 
 export async function createFolderAction(formData: InputsDataFolder) {
   const unique_id = nanoid(16);
@@ -199,4 +176,33 @@ export async function updateTaskAction(formData: InputsDataAssignTask) {
     formData.description,
     formData.deadline,
   );
+}
+
+export async function checkAuth() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+}
+
+export async function logOut() {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error(error);
+    throw new Error(`Failed to log out: ${error.message}`);
+  }
+
+  redirect("/login");
+}
+
+export async function getUserRoleAction() {
+  return await getUserRole();
 }

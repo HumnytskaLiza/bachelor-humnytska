@@ -1,11 +1,14 @@
 import "server-only";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 import { generateEmbeddings } from "@/lib/ai/embeddings";
 import { nanoid } from "./utils";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import { JobPosition, Level } from "./types";
+import { redirect } from "next/navigation";
 
 export async function fetchStandardUsers() {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("users")
     .select("*")
@@ -28,6 +31,8 @@ export async function createStandardUser(
   job_position: JobPosition,
   level: Level,
 ) {
+  const supabase = await createClient();
+
   const { error } = await supabase.from("users").insert([
     {
       unique_id,
@@ -48,6 +53,8 @@ export async function createStandardUser(
 }
 
 export async function fetchUserById(unique_id: string) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("users")
     .select("*")
@@ -63,6 +70,8 @@ export async function fetchUserById(unique_id: string) {
 }
 
 export async function fetchAdminUsers() {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("users")
     .select("*")
@@ -82,6 +91,8 @@ export async function createFolder(
   color_hex: string,
   parent_id: string | null,
 ) {
+  const supabase = await createClient();
+
   const { error } = await supabase.from("folders").insert([
     {
       unique_id,
@@ -98,6 +109,8 @@ export async function createFolder(
 }
 
 export async function fetchChatHistory() {
+  const supabase = await createClient();
+
   const { data, error } = await supabase.from("chats").select("*");
 
   if (error) {
@@ -109,6 +122,8 @@ export async function fetchChatHistory() {
 }
 
 export async function fetchChatById(unique_id: string) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("chats")
     .select("*")
@@ -126,6 +141,8 @@ export async function fetchChatById(unique_id: string) {
 }
 
 async function fetchChatMessages(unique_id: string) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("messages")
     .select("*")
@@ -146,6 +163,8 @@ export async function addMessage(
   role: string,
   chatId: string,
 ) {
+  const supabase = await createClient();
+
   const { data: chat, error: fetchError } = await supabase
     .from("chats")
     .select("messages")
@@ -171,6 +190,8 @@ export async function addMessage(
 }
 
 export async function deleteChat(unique_id: string) {
+  const supabase = await createClient();
+
   const { error } = await supabase
     .from("chats")
     .delete()
@@ -183,6 +204,8 @@ export async function deleteChat(unique_id: string) {
 }
 
 export async function createChat(unique_id: string, name: string) {
+  const supabase = await createClient();
+
   const { error } = await supabase
     .from("chats")
     .insert([{ unique_id, name }])
@@ -206,6 +229,8 @@ export async function addFileToStorage(
   if (!storagePath) throw new Error("Missing storage path");
 
   const filePath = `${storagePath}/${name}`;
+
+  const supabase = await createClient();
 
   const { data, error } = await supabase.storage
     .from("Knowledge")
@@ -233,6 +258,8 @@ export async function createFileMetadata(
   path: string,
   folder_id: string | null,
 ) {
+  const supabase = await createClient();
+
   const { error } = await supabase
     .from("files")
     .insert([{ name, unique_id, bucket, path, folder_id }]);
@@ -253,6 +280,8 @@ export async function createEmbeddings(content: string, file_id: string) {
     embedding: embedding.embedding,
   }));
 
+  const supabase = await createClient();
+
   const { error } = await supabase.from("embeddings").insert(rows);
 
   if (error) {
@@ -262,6 +291,8 @@ export async function createEmbeddings(content: string, file_id: string) {
 }
 
 export async function fetchFolders(unique_id: string) {
+  const supabase = await createClient();
+
   try {
     if (unique_id === "") {
       const { data: folders, error: foldersError } = await supabase
@@ -315,6 +346,8 @@ export async function fetchFolders(unique_id: string) {
 }
 
 export async function fetchFileLinkById(unique_id: string) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("files")
     .select("*")
@@ -330,6 +363,8 @@ export async function fetchFileLinkById(unique_id: string) {
 }
 
 export async function fetchJourneys() {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("journeys")
     .select("*")
@@ -344,6 +379,8 @@ export async function fetchJourneys() {
 }
 
 export async function fetchJourneyById(unique_id: string) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("journeys")
     .select("*")
@@ -359,6 +396,8 @@ export async function fetchJourneyById(unique_id: string) {
 }
 
 export async function fetchJourneyTasks(unique_id: string) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("tasks")
     .select("*")
@@ -373,6 +412,8 @@ export async function fetchJourneyTasks(unique_id: string) {
 }
 
 export async function fetchJourneyUsers(unique_id: string) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("users")
     .select("*")
@@ -394,6 +435,8 @@ export async function createJourney(
   color_hex: string,
   start_date: Date,
 ) {
+  const supabase = await createClient();
+
   const { error } = await supabase
     .from("journeys")
     .insert([{ unique_id, name, job_position, level, color_hex, start_date }]);
@@ -411,6 +454,8 @@ export async function createTask(
   deadline: Date,
   journey_id: string,
 ) {
+  const supabase = await createClient();
+
   const { error } = await supabase
     .from("tasks")
     .insert([{ unique_id, name, description, deadline, journey_id }]);
@@ -422,6 +467,8 @@ export async function createTask(
 }
 
 export async function fetchUsersWithoutJourney() {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("users")
     .select("*")
@@ -436,6 +483,8 @@ export async function fetchUsersWithoutJourney() {
 }
 
 export async function updateUser(user_id: string, journey_id: string) {
+  const supabase = await createClient();
+
   const { error } = await supabase
     .from("users")
     .update({
@@ -457,6 +506,8 @@ export async function updateTask(
   description: string,
   deadline: Date,
 ) {
+  const supabase = await createClient();
+
   const { error } = await supabase
     .from("tasks")
     .update({
@@ -472,4 +523,22 @@ export async function updateTask(
     console.error(error);
     throw new Error(`Failed to update task: ${error.message}`);
   }
+}
+
+export async function getUserRole() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  const { data } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  return data?.role ?? null;
 }

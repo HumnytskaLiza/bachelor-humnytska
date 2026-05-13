@@ -11,10 +11,6 @@ export default function JourneyElement({
   color_hex,
   start_date,
 }: Journey) {
-  const maxLength = 26;
-  const labelName =
-    name.length > maxLength ? name.slice(0, maxLength) + "…" : name;
-
   const labelDate = new Date(created_date).toLocaleDateString("uk-UA");
   const labelStartDate = new Date(start_date).toLocaleDateString("uk-UA");
 
@@ -27,7 +23,7 @@ export default function JourneyElement({
       >
         <div className="absolute inset-0 bg-black/10" />
         <div className="relative flex h-full flex-col justify-between">
-          <div className="flex items-start justify-between">
+          <div className="flex items-center justify-between">
             <p className="text-2xl font-bold uppercase ">{job_position}</p>
             <div
               className="border border-gray-300 px-3 text-xs bg-white 
@@ -48,7 +44,7 @@ export default function JourneyElement({
             <p
               className={`text-lg font-semibold ${color_hex === "#eae4da" ? "text-black" : "text-white"}`}
             >
-              {labelName}
+              {name}
             </p>
           </div>
           <div className="flex items-center justify-between">

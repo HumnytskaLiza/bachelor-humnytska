@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 import { nanoid } from "@/lib/utils";
 
 export async function POST(req: Request) {

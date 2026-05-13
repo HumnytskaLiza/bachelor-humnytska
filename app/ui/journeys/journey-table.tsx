@@ -6,7 +6,8 @@ import { JourneyTableSkeleton } from "../skeletons";
 import NoDataComponent from "../no-data-component";
 import JourneyElement from "./journey-element";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) =>
+  fetch(url, { credentials: "include" }).then((res) => res.json());
 
 export default function JourneyTable() {
   const { data, isLoading } = useSWR<Journey[]>("/api/journey", fetcher, {
@@ -18,7 +19,9 @@ export default function JourneyTable() {
   return (
     <div
       className={
-        "grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-6"
+        isNoData
+          ? "flex justify-center items-center h-[80%]"
+          : "grid gap-5 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 pb-6"
       }
     >
       {data?.map((element) => (

@@ -1,5 +1,5 @@
 import { UIMessage } from "ai";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 import { coordinatorAgent } from "@/lib/ai/agents/coordinator";
 import { nanoid } from "nanoid";
 

@@ -1,12 +1,11 @@
 import NavLinks from "@/app/ui/nav-links";
-import Link from "next/link";
-// import { logOutAction } from "@/lib/actions";
+import { logOut } from "@/lib/actions";
 
 export default function SideNav() {
   return (
     <div className="flex h-full flex-col w-40 md:w-50 lg:w-80 bg-gray-50 border-r border-gray-300">
-      <div className="h-14 p-3 items-center flex">
-        <svg height="16" viewBox="0 0 16 16" width="16">
+      <div className="h-20 p-3 items-center flex">
+        <svg height="20" viewBox="0 0 16 16" width="20">
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -17,12 +16,11 @@ export default function SideNav() {
       </div>
       <div className="flex grow flex-col justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
         <NavLinks />
-        {/* <form action={logOutAction}> */}
-
         <div
           className="border-gray-300 border-t p-2 text-sm font-medium m-0 
         hover:bg-gray-100 md:flex-none md:justify-start md:p-4 md:px-3 cursor-pointer
         flex flex-row gap-4 items-center"
+          onClick={logOut}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,5 @@
 import { embedMany, embed } from "ai";
-import { supabase } from "../supabase";
+import { createClient } from "@/lib/supabase/client";
 
 const embeddingModel = "openai/text-embedding-ada-002";
 
@@ -16,6 +16,8 @@ const generateChunks = (input: string): string[] => {
     .split(".")
     .filter((i) => i !== "");
 };
+
+const supabase = createClient();
 
 export const generateEmbeddings = async (
   value: string,
