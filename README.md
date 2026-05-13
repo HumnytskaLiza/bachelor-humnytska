@@ -17,7 +17,7 @@ pnpm install
 pnpm dev
 ```
 
-Після цього запустіть наступне посилання у браузері [http://localhost:3000](http://localhost:3000).
+Після цього запустіть наступне посилання у браузері: [http://localhost:3000](http://localhost:3000).
 
 
 ### Хостинг
