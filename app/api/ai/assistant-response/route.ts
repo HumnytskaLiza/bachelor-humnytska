@@ -1,7 +1,8 @@
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import { nanoid } from "@/lib/utils";
 
 export async function POST(req: Request) {
+  const supabase = await createClient();
   const { role, content } = await req.json();
   const chatId = new URL(req.url).searchParams.get("chatId");
 

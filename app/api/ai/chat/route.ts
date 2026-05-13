@@ -1,11 +1,12 @@
 import { UIMessage } from "ai";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import { coordinatorAgent } from "@/lib/ai/agents/coordinator";
 import { nanoid } from "nanoid";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
+  const supabase = await createClient();
   const chatId = new URL(req.url).searchParams.get("chatId");
 
   const { messages }: { messages: UIMessage[] } = await req.json();
