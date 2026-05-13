@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Основна Інформація Про Проєкт
 
-## Getting Started
+- Назва: 📕 Employee Onboarding Platform
+- Тема: РОЗРОБЛЕННЯ ВЕБ-ПЛАТФОРМИ ПІДТРИМКИ АДАПТАЦІЇ ПРАЦІВНИКІВ З ІНТЕРАКТИВНИМ ІНТЕЛЕКТУАЛЬНИМ АГЕНТОМ
+- ПІБ: Гумницька Єлизавета Олегівна, студентка групи 4CS-42, спеціальності 122 Комп’ютерні науки
+- Науковий керівник:  Колдовський В. В., доцент IT STEP Університет, кандидат економічних наук 
 
-First, run the development server:
+Employee Onboarding Platform - це прототип веб-система для проведення онбордингу нових працівників у малих компаніях. 
+
+## Запуск системи
+
+### Локально
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Після цього запустіть наступне посилання у браузері [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Хостинг
 
-## Learn More
+[employee-onboarding-platform-eight.vercel.app](https://employee-onboarding-platform-eight.vercel.app/)
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Тестування
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Для тестування системи під стандартним користувачем:
+- Email:
+- Password:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Для тестування системи під адміністратором:
+- Email:
+- Password:
