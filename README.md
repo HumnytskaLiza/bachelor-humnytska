@@ -7,6 +7,8 @@
 
 Employee Onboarding Platform - це прототип веб-система для проведення онбордингу нових працівників у малих компаніях. 
 
+
+
 ## Запуск системи
 
 ### Локально
@@ -19,9 +21,13 @@ pnpm dev
 Після цього запустіть наступне посилання у браузері [http://localhost:3000](http://localhost:3000).
 
 
+
+
 ### Хостинг
 
 [employee-onboarding-platform-eight.vercel.app](https://employee-onboarding-platform-eight.vercel.app/)
+
+
 
 
 ## Тестування
