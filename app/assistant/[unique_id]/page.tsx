@@ -1,12 +1,15 @@
 import Header from "../../ui/header";
-import { UniqueIdProps } from "@/lib/definitions";
-import { fetchChatById } from "@/lib/data";
+import { fetchChatById } from "@/lib/data/chat";
 import Chat from "@/app/ui/chat/chat";
 import { UIMessage } from "ai";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({ params }: UniqueIdProps) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ unique_id: string }>;
+}) {
   const { unique_id } = await params;
   const messageHistory = await fetchChatById(unique_id);
 

@@ -3,19 +3,19 @@
 import { createClient } from "./supabase/server";
 import { redirect } from "next/navigation";
 
+import { addMessage, deleteChat, createChat } from "./data/chat";
+import { createStandardUser, getUserRole } from "./data/user";
+import { createFolder, addFileToStorage } from "./data/knowledge";
+
 import {
-  createFolder,
-  createStandardUser,
-  addMessage,
-  deleteChat,
-  createChat,
-  addFileToStorage,
   createJourney,
   createTask,
   updateUser,
   updateTask,
-  getUserRole,
-} from "./data";
+  updateTaskStatus,
+  removeUser,
+} from "./data/journey";
+
 import { nanoid } from "nanoid";
 import { Level, JobPosition } from "./types";
 
@@ -77,6 +77,11 @@ type InputsDataAssignTask = {
   deadline: Date;
 };
 
+type InputsDataChangeTaskStatus = {
+  task_id: string;
+  status: "Not Started" | "In Progress" | "Done" | "Blocked" | "Skipped";
+};
+
 export async function createFolderAction(formData: InputsDataFolder) {
   const unique_id = nanoid(16);
 
@@ -96,7 +101,6 @@ export async function createStandardUserAction(formData: InputsDataUser) {
     formData.first_name,
     formData.last_name,
     formData.email,
-    formData.password,
     formData.job_position,
     formData.level,
   );
@@ -169,6 +173,10 @@ export async function updateUserAction(formData: InputsDataAssignUser) {
   await updateUser(formData.user_id, formData.journey_id);
 }
 
+export async function removeUserAction(user_id: string, journey_id: string) {
+  await removeUser(user_id, journey_id);
+}
+
 export async function updateTaskAction(formData: InputsDataAssignTask) {
   await updateTask(
     formData.unique_id,
@@ -176,6 +184,12 @@ export async function updateTaskAction(formData: InputsDataAssignTask) {
     formData.description,
     formData.deadline,
   );
+}
+
+export async function updateTaskStatusAction(
+  formData: InputsDataChangeTaskStatus,
+) {
+  await updateTaskStatus(formData.task_id, formData.status);
 }
 
 export async function checkAuth() {

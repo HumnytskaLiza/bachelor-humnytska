@@ -1,4 +1,4 @@
-import { fetchJourneys, createJourney } from "@/lib/data";
+import { fetchJourneys, createJourney } from "@/lib/data/journey";
 import { NextResponse } from "next/server";
 import { JobPositions, Levels } from "@/lib/types";
 import { z } from "zod";

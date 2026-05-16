@@ -1,4 +1,4 @@
-import { fetchStandardUsers, createStandardUser } from "@/lib/data";
+import { fetchStandardUsers, createStandardUser } from "@/lib/data/user";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -39,22 +39,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 });
     }
 
-    const {
-      unique_id,
-      first_name,
-      last_name,
-      email,
-      password,
-      job_position,
-      level,
-    } = parsed.data;
+    const { unique_id, first_name, last_name, email, job_position, level } =
+      parsed.data;
 
     await createStandardUser(
       unique_id,
       first_name,
       last_name,
       email,
-      password,
       job_position,
       level,
     );

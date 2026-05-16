@@ -5,7 +5,12 @@ import Button from "../../button";
 import Header from "../../header";
 import Input from "../../input";
 import { createTaskAction } from "@/lib/actions";
-import { CreateTaskPopupProps } from "@/lib/definitions";
+
+type CreateTaskPopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  unique_id: string;
+};
 
 const dateToday = new Date(Date.now());
 

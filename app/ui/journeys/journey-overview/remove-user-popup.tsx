@@ -1,23 +1,25 @@
 "use client";
 
 import { useTransition } from "react";
-import Button from "../button";
-import Header from "../header";
-import { deleteChatAction } from "@/lib/actions";
+import Button from "../../button";
+import Header from "../../header";
+import { removeUserAction } from "@/lib/actions";
 
-type DeleteChatPopupProps = {
+type RemoveUserPopupProps = {
   isOpen: boolean;
   onClose: () => void;
   uniqueId: string;
+  journeyId: string;
   name: string;
 };
 
-export default function DeleteChatPopup({
+export default function RemoveUserPopup({
   isOpen,
   onClose,
   uniqueId,
+  journeyId,
   name,
-}: DeleteChatPopupProps) {
+}: RemoveUserPopupProps) {
   const [isPending, startTransition] = useTransition();
 
   if (!isOpen) return null;
@@ -39,9 +41,10 @@ export default function DeleteChatPopup({
           >
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="flex flex-col gap-4 m-3">
-                <Header name={"🗨️ Delete Chat"} type="subheader" />
+                <Header name={"🙎 Remove User"} type="subheader" />
                 <p className="text-sm">
-                  Do you really want to delete this conversation: <b>{name}</b>?
+                  Do you really want to remove this user from the journey:{" "}
+                  <b>{name}</b>?
                 </p>
               </div>
             </div>
@@ -49,11 +52,11 @@ export default function DeleteChatPopup({
               <Button
                 onClick={() => {
                   startTransition(async () => {
-                    await deleteChatAction(uniqueId);
+                    await removeUserAction(uniqueId, journeyId);
                     onClose();
                   });
                 }}
-                text={isPending ? "Deleting..." : "Delete"}
+                text={isPending ? "Removing..." : "Remove"}
                 type="delete"
                 buttonType="button"
               />

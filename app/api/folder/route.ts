@@ -1,4 +1,4 @@
-import { fetchFolders, createFolder } from "@/lib/data";
+import { fetchFolders, createFolder } from "@/lib/data/knowledge";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 

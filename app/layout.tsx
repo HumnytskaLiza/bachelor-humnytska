@@ -2,7 +2,7 @@
 
 import { robotoSlab } from "./ui/fonts";
 import "@/app/ui/globals.css";
-import { getUserRole } from "@/lib/data";
+import { getUserRole } from "@/lib/data/user";
 import App from "./app";
 
 export default async function RootLayout({

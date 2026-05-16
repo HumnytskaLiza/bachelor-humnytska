@@ -1,11 +1,23 @@
 "use client";
 
 import useSWR, { Key } from "swr";
-import { FolderResponse, KnowledgeDataProps } from "@/lib/definitions";
+import { Folder, File } from "@/lib/definitions";
 import FolderElement from "./folder-element";
 import FileElement from "./file-element";
 import { KnowledgeDataSkeleton } from "../skeletons";
 import NoDataComponent from "../no-data-component";
+
+type FolderResponse = {
+  current: Folder | null;
+  folders: Folder[];
+  files: File[];
+};
+
+type KnowledgeDataProps = {
+  params: {
+    unique_id?: string;
+  };
+};
 
 const fetcher = (url: string) =>
   fetch(url, { credentials: "include" }).then((res) => res.json());

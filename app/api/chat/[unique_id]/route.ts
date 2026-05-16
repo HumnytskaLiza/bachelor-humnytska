@@ -1,5 +1,4 @@
-import { fetchChatById, deleteChat } from "@/lib/data";
-import { addMessage } from "@/lib/data";
+import { fetchChatById, deleteChat, addMessage } from "@/lib/data/chat";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 

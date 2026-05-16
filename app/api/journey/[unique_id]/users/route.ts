@@ -1,15 +1,5 @@
-import { fetchJourneyUsers } from "@/lib/data";
+import { fetchJourneyUsers } from "@/lib/data/journey";
 import { NextResponse } from "next/server";
-import { z } from "zod";
-
-// const schema = z.object({
-//   unique_id: z.string(),
-//   name: z.string().min(1),
-//   role: z.enum(JobPositions),
-//   level: z.enum(Levels),
-//   color_hex: z.string(),
-//   start_date: z.date(),
-// });
 
 export async function GET(
   request: Request,

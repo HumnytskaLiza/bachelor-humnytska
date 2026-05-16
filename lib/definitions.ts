@@ -1,4 +1,5 @@
 import { UIMessage } from "ai";
+import { JobPosition, Level, Status, Role } from "./types";
 
 export type User = {
   id: number;
@@ -6,12 +7,12 @@ export type User = {
   last_name: string;
   email: string;
   phone: string;
-  password: string;
   created_date: Date;
   unique_id: string;
-  role: "admin" | "standard";
-  job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
-  level: "Trainee" | "Junior" | "Middle" | "Senior";
+  role: Role;
+  job_position: JobPosition;
+  level: Level;
+  journey_id: string;
 };
 
 export type File = {
@@ -48,18 +49,19 @@ export type Task = {
   created_date: Date;
 };
 
+export type TaskAssignment = {
+  task_id: string;
+  status: Status;
+};
+
 export type Journey = {
   unique_id: string;
   name: string;
   created_date: Date;
-  job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
-  level: "Trainee" | "Junior" | "Middle" | "Senior";
+  job_position: JobPosition;
+  level: Level;
   color_hex: string;
   start_date: Date;
-};
-
-export type JourneyDetailsProps = {
-  journey: Journey;
 };
 
 export type Chat = {
@@ -68,181 +70,4 @@ export type Chat = {
   created_date: Date;
   unique_id: string;
   messages: UIMessage[];
-};
-
-export type JourneyOverviewTableProps = {
-  unique_id: string;
-};
-
-export type ChatProps = {
-  unique_id: string;
-  data: UIMessage[];
-};
-
-export type InputsDataUser = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
-  level: "Trainee" | "Junior" | "Middle" | "Senior";
-};
-
-export type InputsDataChat = {
-  name: string;
-};
-
-export type CreateUserPopupProps = {
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-export type CreateChatPopupProps = {
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-export type DeleteChatPopupProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  uniqueId: string;
-  name: string;
-};
-
-export type EmployeesTableProps = {
-  users: User[];
-};
-
-export type JourneyTableProps = {
-  journeys: Journey[];
-};
-
-export type ChatHistoryProps = {
-  chats: Chat[];
-};
-
-export type UniqueIdProps = { params: Promise<{ unique_id: string }> };
-
-export type KnowledgeDataProps = {
-  params: {
-    unique_id?: string;
-  };
-};
-
-export type JourneyOverviewDataProps = {
-  unique_id: string;
-  users: User[];
-};
-
-export type UtilityBarProps = {
-  unique_id?: string;
-  role: string;
-};
-
-export type FolderResponse = {
-  current: Folder | null;
-  folders: Folder[];
-  files: File[];
-};
-
-export type EmployeeProfileProps = {
-  user: User;
-};
-
-export type JourneyOverviewProps = {
-  unique_id: string;
-  journey: Journey;
-};
-
-export type CardProps = {
-  header: string;
-  content: string;
-  background?: string;
-};
-
-export type CreatePopupProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  unique_id?: string;
-};
-
-export type CreateTaskPopupProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  unique_id: string;
-};
-
-export type EditTaskPopupProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  task: Task;
-};
-
-export type AddUserPopupProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  unique_id: string;
-  users: User[];
-};
-
-export type CreateJourneyPopupProps = {
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-export type FileElementProps = {
-  name: string;
-  createdDate: Date;
-  uniqueId: string;
-};
-
-export type FolderElementProps = {
-  name: string;
-  createdDate: Date;
-  uniqueId: string;
-  color_hex: string;
-  isEmpty: boolean;
-};
-
-export type ButtonProps = {
-  text?: string;
-  type: "main" | "secondary" | "delete";
-  buttonType: "button" | "submit";
-  disabled?: boolean;
-  svg?: string;
-  url?: string;
-  onClick?: () => void;
-};
-
-export type HeaderProps = {
-  name: string;
-  type: "header" | "subheader" | "sectionName";
-};
-
-export type InputProps = {
-  name: string;
-  required: boolean;
-  placeholder?: string;
-  type?: "hidden" | "email" | "file" | "date" | "password";
-  style?: "round" | "square";
-  options?: string[];
-  optionsWithId?: { label: string; value: string }[];
-  value?: string;
-  dateLabel?: string;
-  disabled?: boolean;
-  onChange?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => void;
-  onKeyDown?: (e: { key: string }) => void;
-};
-
-export type MessageProps = {
-  role: string;
-  content: string;
-  agentRole?: string;
-};
-
-export type NoDataComponentProps = {
-  firstLine: string;
-  secondLine?: string;
 };

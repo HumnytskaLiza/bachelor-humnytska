@@ -1,7 +1,12 @@
-import { JourneyOverviewProps } from "@/lib/definitions";
 import AssignedUsersTable from "./journey-overview/assigned-users-table";
 import AssignedTasksTable from "./journey-overview/assigned-task-table";
 import JourneyDetails from "./journey-overview/journey-details";
+import { Journey } from "@/lib/definitions";
+
+type JourneyOverviewProps = {
+  unique_id: string;
+  journey: Journey;
+};
 
 export default async function JourneyOverviewPage({
   unique_id,

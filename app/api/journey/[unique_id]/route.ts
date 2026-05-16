@@ -1,4 +1,4 @@
-import { fetchJourneyById } from "@/lib/data";
+import { fetchJourneyById } from "@/lib/data/journey";
 import { NextResponse } from "next/server";
 
 export async function GET(

@@ -1,10 +1,13 @@
 import Header from "../../ui/header";
-import { UniqueIdProps } from "@/lib/definitions";
-import { fetchJourneyById, fetchUsersWithoutJourney } from "@/lib/data";
+import { fetchJourneyById, fetchUsersWithoutJourney } from "@/lib/data/journey";
 import UtilityBar from "@/app/ui/journeys/journey-overview/utility-bar";
 import JourneyOverviewPage from "@/app/ui/journeys/journey-overview-page";
 
-export default async function Page({ params }: UniqueIdProps) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ unique_id: string }>;
+}) {
   const { unique_id } = await params;
   const data = await fetchJourneyById(unique_id);
   const users = await fetchUsersWithoutJourney();

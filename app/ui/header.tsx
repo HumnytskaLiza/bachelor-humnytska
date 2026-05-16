@@ -1,4 +1,7 @@
-import { HeaderProps } from "@/lib/definitions";
+type HeaderProps = {
+  name: string;
+  type: "header" | "subheader" | "sectionName";
+};
 
 export default function Header({ type, name }: HeaderProps) {
   return type === "header" ? (

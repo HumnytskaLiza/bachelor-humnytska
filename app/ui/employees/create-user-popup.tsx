@@ -5,7 +5,21 @@ import Button from "../button";
 import Header from "../header";
 import Input from "../input";
 import { createStandardUserAction } from "@/lib/actions";
-import { InputsDataUser, CreateUserPopupProps } from "@/lib/definitions";
+import { Level, JobPosition } from "@/lib/types";
+
+type CreateUserPopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+type InputsDataUser = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  job_position: JobPosition;
+  level: Level;
+};
 
 export default function CreateUserPopup({
   isOpen,

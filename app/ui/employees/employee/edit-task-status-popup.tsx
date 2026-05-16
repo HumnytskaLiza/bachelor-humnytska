@@ -1,30 +1,27 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import Button from "../button";
-import Header from "../header";
-import Input from "../input";
-import { createChatAction } from "@/lib/actions";
+import Button from "../../button";
+import Header from "../../header";
+import Input from "../../input";
+import { updateTaskStatusAction } from "@/lib/actions";
+import { TaskAssignment } from "@/lib/definitions";
 
-type CreateChatPopupProps = {
+type EditTaskStatusPopupProps = {
   isOpen: boolean;
   onClose: () => void;
+  taskAssignment: TaskAssignment;
 };
 
-type InputsDataChat = {
-  name: string;
-};
-
-export default function CreateChatPopup({
+export default function EditTaskStatusPopup({
   isOpen,
   onClose,
-}: CreateChatPopupProps) {
-  const [inputsData, setInputsData] = useState<InputsDataChat>({
-    name: "",
+  taskAssignment,
+}: EditTaskStatusPopupProps) {
+  const [inputsData, setInputsData] = useState({
+    task_id: taskAssignment.task_id,
+    status: taskAssignment.status,
   });
-
-  const router = useRouter();
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -33,6 +30,13 @@ export default function CreateChatPopup({
     setInputsData((data) => ({ ...data, [name]: value }));
     console.log(inputsData);
   };
+
+  function validateData() {
+    startTransition(async () => {
+      await updateTaskStatusAction(inputsData);
+      onClose();
+    });
+  }
 
   const [isPending, startTransition] = useTransition();
 
@@ -55,26 +59,26 @@ export default function CreateChatPopup({
           >
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="flex flex-col gap-4 m-3">
-                <Header name={"✍️ Start New Conversation"} type="subheader" />
-
+                <Header name={"📋 Edit A Task"} type="subheader" />
                 <Input
                   required={true}
-                  placeholder={"Provide a name..."}
-                  name={"name"}
+                  name={"status"}
                   onChange={handleInputChange}
+                  value={inputsData.status}
+                  options={[
+                    "Not Started",
+                    "In Progress",
+                    "Done",
+                    "Blocked",
+                    "Skipped",
+                  ]}
                 />
               </div>
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-2">
               <Button
-                onClick={() => {
-                  startTransition(async () => {
-                    const unique_id = await createChatAction(inputsData);
-                    router.push(`/assistant/${unique_id}`);
-                    onClose();
-                  });
-                }}
-                text={isPending ? "Creating..." : "Create"}
+                onClick={validateData}
+                text={isPending ? "Updating..." : "Update"}
                 type="main"
                 buttonType="button"
               />

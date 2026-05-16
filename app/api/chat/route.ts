@@ -1,4 +1,4 @@
-import { fetchChatHistory, createChat } from "@/lib/data";
+import { fetchChatHistory, createChat } from "@/lib/data/chat";
 import { NextResponse } from "next/server";
 import z from "zod";
 

@@ -8,8 +8,13 @@ import { ScrollArea } from "../scroll";
 import Input from "../input";
 import Button from "../button";
 import MessageComponent from "../message";
-import { ChatProps } from "@/lib/definitions";
 import NoDataComponent from "../no-data-component";
+import { UIMessage } from "ai";
+
+type ChatProps = {
+  unique_id: string;
+  data: UIMessage[];
+};
 
 export default function Chat({ unique_id, data }: ChatProps) {
   const [input, setInput] = useState("");

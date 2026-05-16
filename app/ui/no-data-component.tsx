@@ -1,4 +1,7 @@
-import { NoDataComponentProps } from "@/lib/definitions";
+type NoDataComponentProps = {
+  firstLine: string;
+  secondLine?: string;
+};
 
 export default function NoDataComponent({
   firstLine,

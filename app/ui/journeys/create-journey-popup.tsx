@@ -5,8 +5,12 @@ import Button from "../button";
 import Header from "../header";
 import Input from "../input";
 import { createJourneyAction } from "@/lib/actions";
-import { CreateJourneyPopupProps } from "@/lib/definitions";
 import { Levels, JobPositions } from "@/lib/types";
+
+type CreateJourneyPopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
 
 const dateToday = new Date(Date.now());
 

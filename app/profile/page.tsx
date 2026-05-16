@@ -21,7 +21,7 @@ export default async function Page() {
         className={`h-40 w-full ${role === "admin" ? "bg-[#808bc5]" : "bg-[#ED773C]"} rounded-2xl border border-gray-300`}
       />
       <div className="relative pt-0">
-        <div className="flex items-center gap-4 -mt-10">
+        <div className="flex items-center gap-4 -mt-16">
           <div className="h-30 w-30 rounded-full border-4 border-white bg-gray-300 overflow-hidden">
             <Image
               src={catPhoto}

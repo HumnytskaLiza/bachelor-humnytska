@@ -1,5 +1,21 @@
 import styles from "@/app/ui/modules/main.module.css";
-import { InputProps } from "@/lib/definitions";
+
+type InputProps = {
+  name: string;
+  required: boolean;
+  placeholder?: string;
+  type?: "hidden" | "email" | "file" | "date" | "password";
+  style?: "round" | "square";
+  options?: string[];
+  optionsWithId?: { label: string; value: string }[];
+  value?: string;
+  dateLabel?: string;
+  disabled?: boolean;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => void;
+  onKeyDown?: (e: { key: string }) => void;
+};
 
 export default function Input({
   name,

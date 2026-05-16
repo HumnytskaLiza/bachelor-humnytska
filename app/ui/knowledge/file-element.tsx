@@ -1,6 +1,11 @@
 import Link from "next/link";
 import styles from "@/app/ui/modules/knowledge.module.css";
-import { FileElementProps } from "@/lib/definitions";
+
+type FileElementProps = {
+  name: string;
+  createdDate: Date;
+  uniqueId: string;
+};
 
 export default function FileElement({
   name,

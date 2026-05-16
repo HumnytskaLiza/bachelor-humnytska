@@ -5,13 +5,18 @@ import Button from "../button";
 import Header from "../header";
 import Input from "../input";
 import { addFileToStorageAction } from "@/lib/actions";
-import { CreatePopupProps } from "@/lib/definitions";
+
+type CreateFilePopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  unique_id?: string;
+};
 
 export default function CreateFilePopup({
   isOpen,
   onClose,
   unique_id,
-}: CreatePopupProps) {
+}: CreateFilePopupProps) {
   type InputsData = {
     name: string;
     content: File | null;

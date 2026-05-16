@@ -1,4 +1,3 @@
-import { UniqueIdProps } from "@/lib/definitions";
 import Header from "@/app/ui/header";
 import UtilityBar from "@/app/ui/knowledge/utility-bar";
 import Folders from "@/app/ui/knowledge/knowledge-data";
@@ -6,7 +5,11 @@ import { checkAuth, getUserRoleAction } from "@/lib/actions";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({ params }: UniqueIdProps) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ unique_id: string }>;
+}) {
   const { unique_id } = await params;
 
   await checkAuth();

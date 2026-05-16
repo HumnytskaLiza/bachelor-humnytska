@@ -5,7 +5,12 @@ import Button from "../button";
 import Header from "../header";
 import Input from "../input";
 import { createFolderAction } from "@/lib/actions";
-import { CreatePopupProps } from "@/lib/definitions";
+
+type CreatePopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  unique_id?: string;
+};
 
 export default function CreateFolderPopup({
   isOpen,

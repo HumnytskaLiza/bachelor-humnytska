@@ -1,8 +1,8 @@
 import Header from "../../header";
-import { JourneyDetailsProps } from "@/lib/definitions";
+import { Journey } from "@/lib/definitions";
 import DetailCard from "../../detail-card";
 
-export default function JourneyDetails({ journey }: JourneyDetailsProps) {
+export default function JourneyDetails({ journey }: { journey: Journey }) {
   const labelDate = new Date(journey.start_date).toLocaleDateString("uk-UA");
 
   return (

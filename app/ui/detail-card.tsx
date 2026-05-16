@@ -1,6 +1,14 @@
-import { CardProps } from "@/lib/definitions";
+type DetailCardProps = {
+  header: string;
+  content: string;
+  background?: string;
+};
 
-export default function DetailCard({ header, content, background }: CardProps) {
+export default function DetailCard({
+  header,
+  content,
+  background,
+}: DetailCardProps) {
   return (
     <div
       className={`${background ? background : ""}

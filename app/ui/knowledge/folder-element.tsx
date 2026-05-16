@@ -1,6 +1,13 @@
 import Link from "next/link";
 import styles from "@/app/ui/modules/knowledge.module.css";
-import { FolderElementProps } from "@/lib/definitions";
+
+type FolderElementProps = {
+  name: string;
+  createdDate: Date;
+  uniqueId: string;
+  color_hex: string;
+  isEmpty: boolean;
+};
 
 export default function FolderElement({
   name,

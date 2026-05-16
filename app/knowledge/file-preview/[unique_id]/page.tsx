@@ -1,8 +1,11 @@
 import Header from "../../../ui/header";
-import { UniqueIdProps } from "@/lib/definitions";
-import { fetchFileLinkById } from "@/lib/data";
+import { fetchFileLinkById } from "@/lib/data/knowledge";
 
-export default async function Page({ params }: UniqueIdProps) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ unique_id: string }>;
+}) {
   const { unique_id } = await params;
 
   const data = await fetchFileLinkById(unique_id);

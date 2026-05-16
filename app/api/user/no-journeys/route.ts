@@ -1,4 +1,4 @@
-import { fetchUsersWithoutJourney } from "@/lib/data";
+import { fetchUsersWithoutJourney } from "@/lib/data/journey";
 import { NextResponse } from "next/server";
 
 export async function GET() {

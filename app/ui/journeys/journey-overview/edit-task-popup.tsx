@@ -5,7 +5,13 @@ import Button from "../../button";
 import Header from "../../header";
 import Input from "../../input";
 import { updateTaskAction } from "@/lib/actions";
-import { EditTaskPopupProps } from "@/lib/definitions";
+import { Task } from "@/lib/definitions";
+
+type EditTaskPopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  task: Task;
+};
 
 export default function EditTaskPopup({
   isOpen,
@@ -65,12 +71,14 @@ export default function EditTaskPopup({
                   name={"name"}
                   onChange={handleInputChange}
                   placeholder="Task Name"
+                  dateLabel="Name:"
                   value={inputsData.name}
                 />
                 <Input
                   required={true}
                   name={"description"}
                   onChange={handleInputChange}
+                  dateLabel="Description:"
                   placeholder="Task Description"
                   value={inputsData.description}
                 />

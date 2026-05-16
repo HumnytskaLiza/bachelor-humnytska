@@ -24,6 +24,19 @@
   font-size: small;
 }
 
+.label {
+  padding: 8px 16px;
+  background-color: white;
+  border-radius: 50px;
+  border: 1px solid var(--color-gray-300);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 500;
+  height: 37.5px;
+  font-size: small;
+}
+
 .btn-main {
   padding: 8px 16px;
   background-color: rgb(97, 144, 97);

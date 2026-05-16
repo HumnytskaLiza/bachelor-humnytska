@@ -5,7 +5,14 @@ import Button from "../../button";
 import Header from "../../header";
 import Input from "../../input";
 import { updateUserAction } from "@/lib/actions";
-import { AddUserPopupProps, User } from "@/lib/definitions";
+import { User } from "@/lib/definitions";
+
+type AddUserPopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  unique_id: string;
+  users: User[];
+};
 
 export default function AddUserPopup({
   isOpen,

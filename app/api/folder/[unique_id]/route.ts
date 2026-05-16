@@ -1,4 +1,4 @@
-import { fetchFolders } from "@/lib/data";
+import { fetchFolders } from "@/lib/data/knowledge";
 import { NextResponse } from "next/server";
 
 export async function GET(
