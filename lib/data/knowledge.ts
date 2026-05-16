@@ -170,3 +170,19 @@ export async function fetchFolders(unique_id: string) {
     throw new Error("Failed to fetch folders.");
   }
 }
+
+export async function fetchRecentFiles() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("files")
+    .select("*")
+    .order("created_date");
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to fetch file metadata by id.");
+  }
+
+  return data;
+}

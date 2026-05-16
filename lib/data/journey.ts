@@ -301,3 +301,19 @@ export async function removeUser(user_id: string, journey_id: string) {
     throw new Error(`Failed to delete assignments: ${taskError.message}`);
   }
 }
+
+export async function fetchOpenAssignments() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("task-assignments")
+    .select("*")
+    .in("status", ["Not Started", "In Progress", "Blocked"]);
+
+  if (error) {
+    console.error(error);
+    throw new Error(error.message);
+  }
+
+  return data;
+}
