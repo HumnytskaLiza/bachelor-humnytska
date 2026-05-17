@@ -89,6 +89,7 @@ export default function CreateFilePopup({
                   required={true}
                   name={"content"}
                   type={"file"}
+                  accept=".pdf"
                   onChange={handleInputChange}
                 />
                 {inputsData.content && (

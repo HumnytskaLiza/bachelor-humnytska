@@ -21,7 +21,13 @@ type EmployeeAssignments = {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export default function EmployeeJourneyOverview({ user }: { user: User }) {
+export default function EmployeeJourneyOverview({
+  user,
+  personalDetails = true,
+}: {
+  user: User;
+  personalDetails?: boolean;
+}) {
   const { data } = useSWR<EmployeeAssignments>(
     `/api/employee/${user.unique_id}`,
     fetcher,
@@ -32,7 +38,7 @@ export default function EmployeeJourneyOverview({ user }: { user: User }) {
 
   return (
     <div className="flex flex-col gap-10">
-      <EmployeeDetails user={user} />
+      {personalDetails && <EmployeeDetails user={user} />}
       {data?.journey !== undefined && <JourneyDetails journey={data.journey} />}
       {data?.mergedTasks !== undefined && (
         <EmployeeTasks mergedTasks={data.mergedTasks} />

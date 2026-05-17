@@ -104,7 +104,7 @@ export default function Chat({ unique_id, data }: ChatProps) {
                 status === "submitted" || status === "streaming" ? true : false
               }
               text={"Send"}
-              buttonType={"button"}
+              buttonType={"submit"}
               type={"main"}
             />
           </div>

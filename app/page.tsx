@@ -1,7 +1,11 @@
 "use server";
 
 import Header from "./ui/header";
-import { checkAuth, getUserRoleAction } from "@/lib/actions";
+import {
+  checkAuth,
+  getUserRoleAction,
+  getAuthUserMetadataAction,
+} from "@/lib/actions";
 import AdminDashboard from "./ui/dashboard/admin";
 import StandardDashboard from "./ui/dashboard/standard";
 import { createClient } from "@/lib/supabase/server";
@@ -11,6 +15,7 @@ export default async function Page() {
 
   await checkAuth();
   const role = await getUserRoleAction();
+  const userMetadata = await getAuthUserMetadataAction();
 
   const {
     data: { user },
@@ -22,7 +27,7 @@ export default async function Page() {
         name={`👋 Hello, ${user?.user_metadata?.first_name}`}
         type={"header"}
       />
-      {role === "standard" && <StandardDashboard />}
+      {role === "standard" && <StandardDashboard user={userMetadata} />}
       {role === "admin" && <AdminDashboard />}
     </div>
   );

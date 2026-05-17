@@ -5,6 +5,7 @@ type InputProps = {
   required: boolean;
   placeholder?: string;
   type?: "hidden" | "email" | "file" | "date" | "password";
+  accept?: string;
   style?: "round" | "square";
   options?: string[];
   optionsWithId?: { label: string; value: string }[];
@@ -28,6 +29,7 @@ export default function Input({
   style,
   dateLabel,
   disabled,
+  accept,
   onChange,
 }: InputProps) {
   return options ? (
@@ -90,7 +92,7 @@ export default function Input({
       </svg>
     </div>
   ) : (
-    <div className="flex flex-col gap-2 w-100">
+    <div className="flex flex-col gap-2 w-full">
       {dateLabel && <div className="text-sm font-bold">{dateLabel}</div>}
       <input
         required={required}
@@ -101,6 +103,7 @@ export default function Input({
         placeholder={placeholder}
         onChange={onChange}
         value={value}
+        accept={accept}
         className={
           style == "round"
             ? `${styles.input} rounded-4xl`

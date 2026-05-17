@@ -34,12 +34,6 @@ const links = [
     label: "journeys",
     roles: ["admin"],
   },
-  {
-    name: "My Journey",
-    href: "/my-journey",
-    label: "my journey",
-    roles: ["standard"],
-  },
 ];
 
 export default function NavLinks() {
@@ -74,11 +68,11 @@ export default function NavLinks() {
         .map((link) => (
           <Link key={link.name} href={link.href} passHref>
             <div
-              className={`border-gray-300 border-t p-2 text-sm font-medium m-0 
-        hover:bg-gray-100 md:flex-none md:justify-start md:p-4 md:px-3
+              className={`border-gray-300 border-b text-sm font-medium m-0 
+        hover:bg-gray-100 flex-none justify-start py-4 px-3
         ${link.label == currentPath ? "bg-gray-200" : ""}`}
             >
-              <p className="hidden md:block">{link.name}</p>
+              <p className="block">{link.name}</p>
             </div>
           </Link>
         ))}

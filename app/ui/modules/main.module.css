@@ -1,6 +1,7 @@
 .padding {
   padding: calc(var(--spacing) * 5);
   height: 100%;
+  width: 100%;
 }
 
 .padding > div:first-child {
@@ -8,6 +9,7 @@
   flex-direction: column;
   gap: calc(var(--spacing) * 6);
   height: 100%;
+  width: 100%;
 }
 
 .btn-secondary {
@@ -93,7 +95,6 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  width: 40%;
   cursor: pointer;
 }
 

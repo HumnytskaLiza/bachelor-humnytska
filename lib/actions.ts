@@ -4,7 +4,11 @@ import { createClient } from "./supabase/server";
 import { redirect } from "next/navigation";
 
 import { addMessage, deleteChat, createChat } from "./data/chat";
-import { createStandardUser, getUserRole } from "./data/user";
+import {
+  createStandardUser,
+  getUserRole,
+  getAuthUserMetadata,
+} from "./data/user";
 import { createFolder, addFileToStorage } from "./data/knowledge";
 
 import {
@@ -219,4 +223,8 @@ export async function logOut() {
 
 export async function getUserRoleAction() {
   return await getUserRole();
+}
+
+export async function getAuthUserMetadataAction() {
+  return await getAuthUserMetadata();
 }

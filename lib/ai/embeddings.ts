@@ -10,11 +10,24 @@ export type RetrievalResult = {
   similarity?: number;
 };
 
-const generateChunks = (input: string): string[] => {
-  return input
-    .trim()
-    .split(".")
-    .filter((i) => i !== "");
+const generateChunks = (
+  text: string,
+  chunkSize = 800,
+  overlap = 150,
+): string[] => {
+  const chunks: string[] = [];
+
+  let start = 0;
+
+  while (start < text.length) {
+    const end = start + chunkSize;
+
+    chunks.push(text.slice(start, end).trim());
+
+    start += chunkSize - overlap;
+  }
+
+  return chunks.filter(Boolean);
 };
 
 const supabase = createClient();
@@ -47,8 +60,10 @@ export const findRelevantContent = async (
   const { data, error } = await supabase.rpc("match_documents", {
     query_embedding: userQueryEmbedded,
     match_threshold: 0.8,
-    match_count: 3,
+    match_count: 5,
   });
+
+  console.log(data);
 
   if (error) {
     console.error(error);
