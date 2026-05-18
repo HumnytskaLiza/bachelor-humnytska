@@ -32,10 +32,14 @@ export async function coordinatorAgent(input: string, messages: UIMessage[]) {
   }
 
   const evaluation = await evaluateQuery(input, agentOutput.text);
-  const evaluationInput =
-    input +
-    "\nImprove clarity, add missing details: " +
-    evaluation.missing.join(", ");
+  const evaluationInput = `
+    Original user question:
+    ${input}
+
+    Please improve the previous answer.
+    Focus on:
+    ${evaluation.missing.join(", ")}
+    `;
 
   if (evaluation.needs_retry && evaluation.score < 0.7) {
     let improved;
