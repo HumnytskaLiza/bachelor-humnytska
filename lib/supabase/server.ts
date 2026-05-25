@@ -14,13 +14,11 @@ export async function createClient() {
         },
 
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            cookieStore.set(name, value, {
-              ...options,
-
-              maxAge: 0,
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options);
             });
-          });
+          } catch {}
         },
       },
     },
