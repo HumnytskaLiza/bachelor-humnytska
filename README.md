@@ -28,9 +28,9 @@ pnpm dev
 ## Тестування
 
 Для тестування системи під стандартним користувачем:
-- Email:
-- Password:
+- Email: humnytskaliza@gmail.com
+- Password: StandardEmployee2026
 
 Для тестування системи під адміністратором:
-- Email:
-- Password:
+- Email: gumnickajaliza@gmail.com
+- Password: EmployeeOnboarding2026
