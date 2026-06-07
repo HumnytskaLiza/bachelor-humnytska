@@ -59,7 +59,7 @@ export default function LoginForm() {
         e.preventDefault();
         validateData();
       }}
-      className="relative w-full md:w-[70%] lg:w-[60%] xl:w-[40%] mx-auto flex flex-col gap-6 items-center"
+      className="relative w-full xs:w-[40%] md:w-[70%] lg:w-[60%] xl:w-[40%] mx-auto flex flex-col gap-6 items-center"
     >
       {error && (
         <div

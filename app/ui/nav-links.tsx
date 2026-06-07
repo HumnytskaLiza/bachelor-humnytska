@@ -37,7 +37,7 @@ const links = [
 ];
 
 export default function NavLinks() {
-  const currentPath = usePathname().split("/")[1];
+  const pathname = usePathname();
   const [role, setRole] = useState<string>("standard");
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function NavLinks() {
             <div
               className={`border-gray-300 border-b text-sm font-medium m-0 
         hover:bg-gray-100 flex-none justify-start py-4 px-3
-        ${link.label == currentPath ? "bg-gray-200" : ""}`}
+        ${link.href === pathname ? "bg-gray-200" : ""}`}
             >
               <p className="block">{link.name}</p>
             </div>

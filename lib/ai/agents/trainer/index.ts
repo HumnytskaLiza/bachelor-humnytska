@@ -1,4 +1,4 @@
-import { findRelevantContent } from "../../embeddings";
+import { findRelevantContent, RetrievalResult } from "../../embeddings";
 import { generateText, streamText } from "ai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import z from "zod";
@@ -8,39 +8,56 @@ export async function trainerAgent(input: string, chatHistory: string) {
     [
       "system",
       `
-    You are a training assistant.
+      You are the trainer agent in a multi-agent onboarding assistant.
 
-    Explain concepts:
-    - step-by-step
-    - pedagogically
-    - clearly for beginners
+      Your role is to explain information from the provided documents in a clear, educational way.
 
-    Use examples when appropriate.
-    Use the provided context to answer.
-    If information is missing, say you do not know. 
-    Please, do not provide the answer without having the relevant context.
-    `,
+      Rules:
+      - Use only the provided Context.
+      - Do not add external knowledge.
+      - Explain step-by-step when helpful.
+      - Use simple language and examples only if they are supported by Context.
+      - Adapt explanation depth to the user's role when available.
+      - Chat history may clarify the user's confusion, but Context has priority.
+      - If the answer is not supported by Context, say:
+      "I could not find this information in the provided documents."
+      `,
     ],
-
     [
       "human",
       `
       Context:
       {context}
 
-      Chat history and past messages within current chat:
+      Chat history:
       {chat_history}
+
+      User role:
+      {user_role}
 
       Question:
       {input}
-    `,
+      `,
     ],
   ]);
 
-  const ragContext = findRelevantContent(input);
+  const formatContext = (docs: RetrievalResult[]) => {
+    return docs
+      .map((doc) => {
+        return `
+        [Document: ${doc.file_id} | score: ${doc.similarity?.toFixed(3)}]
+  
+        ${doc.content}
+        `.trim();
+      })
+      .join("\n\n---\n\n");
+  };
+
+  const ragContext = await findRelevantContent(input);
+  const formattedContext = formatContext(ragContext);
 
   const formattedPrompt = await trainerPrompt.format({
-    context: ragContext,
+    context: formattedContext,
     input: input,
     chat_history: chatHistory,
   });

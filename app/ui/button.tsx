@@ -23,13 +23,15 @@ export default function Button({
       type={buttonType}
       disabled={disabled}
       onClick={onClick}
-      className={
-        type == "main"
-          ? `${styles["btn-main"]}`
-          : type == "secondary"
-            ? `${styles["btn-secondary"]}`
-            : `${styles["btn-delete"]}`
-      }
+      className={`
+        text-xs md:text-sm
+        ${
+          type == "main"
+            ? `${styles["btn-main"]}`
+            : type == "secondary"
+              ? `${styles["btn-secondary"]}`
+              : `${styles["btn-delete"]}`
+        }`}
     >
       {svg && (
         <svg height="16" viewBox="0 0 16 16" width="16">

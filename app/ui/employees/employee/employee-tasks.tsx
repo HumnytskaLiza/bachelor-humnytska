@@ -50,10 +50,14 @@ export default function EmployeeTasks({ mergedTasks }: EmployeeTasksProps) {
             key={task.unique_id}
             className="flex flex-col gap-4 p-4 border border-gray-300 rounded-2xl"
           >
-            <div className="flex flex-row items-center justify-between">
-              <p className="text-l font-semibold text-gray-900">{task.name}</p>
+            <div className="flex flex-col md:flex-row gap-4 md:gap-0 items-center justify-between">
+              <p className="text-sm md:text-l font-semibold text-gray-900">
+                {task.name}
+              </p>
               <div className="flex flex-row gap-3 items-center">
-                <div className={`${styles.label}`}>{task.status}</div>
+                <div className={`${styles.label} text-xs md:text-sm`}>
+                  {task.status}
+                </div>
                 <Button
                   buttonType="button"
                   text="Change Status"

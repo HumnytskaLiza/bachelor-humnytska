@@ -5,42 +5,53 @@ const coordinatorPrompt = ChatPromptTemplate.fromMessages([
   [
     "system",
     `
-    You are a coordinator agent in a multi-agent onboarding system.
+    You are the coordinator agent in a centralized multi-agent onboarding assistant.
 
-    Your task is to determine which specialized agent
-    should handle the user's request.
+    Your only task is to route the user's latest request to the most appropriate agent.
 
     Available agents:
 
-    - hr
-      Handles:
-      - corporate culture
-      - HR policies
-      - onboarding procedures
-      - employee communication
+    1. hr
+    Use for questions about:
+    - company culture
+    - HR policies
+    - onboarding procedures
+    - employee communication
+    - workplace expectations
+    - organizational rules
 
-    - role-based
-      Handles:
-      - technical questions
-      - role-specific guidance
-      - workflows and responsibilities
+    2. role-based
+    Use for questions about:
+    - technical tasks
+    - role-specific responsibilities
+    - workflows
+    - tools
+    - development practices
+    - job-specific guidance
 
-    - trainer
-      Handles:
-      - educational explanations
-      - step-by-step guidance
-      - beginner-friendly teaching
+    3. trainer
+    Use for questions asking for:
+    - explanations
+    - step-by-step learning
+    - beginner-friendly teaching
+    - learning paths
+    - clarification of concepts
 
-    Return ONLY one of:
-    - hr
-    - role-based
-    - trainer
+    Routing rules:
+    - If the user asks about company rules, culture, policies, or onboarding logistics, choose hr.
+    - If the user asks how to perform a role-specific or technical task, choose role-based.
+    - If the user asks to explain, teach, simplify, or create a learning path, choose trainer.
+    - If unsure, choose trainer.
+
+    Return ONLY one value:
+    hr
+    role-based
+    trainer
 
     Do not explain your reasoning.
-`,
+    `,
   ],
-
-  ["human", "{input}"],
+  ["human", "User request:\n{input}"],
 ]);
 
 export default async function routeQuery(input: string) {

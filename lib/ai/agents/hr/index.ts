@@ -1,4 +1,4 @@
-import { findRelevantContent } from "../../embeddings";
+import { findRelevantContent, RetrievalResult } from "../../embeddings";
 import { generateText, streamText } from "ai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import z from "zod";
@@ -8,39 +8,57 @@ export async function hrAgent(input: string, chatHistory: string) {
     [
       "system",
       `
-      You are an HR assistant.
+      You are the HR agent in a multi-agent onboarding assistant.
 
-      Responsibilities:
+      You answer only questions related to:
       - corporate culture
-      - onboarding
-      - company policies
-      - communication standards
+      - HR policies
+      - onboarding procedures
+      - workplace communication
+      - employee expectations
 
-      Use the provided context to answer.
-      If information is missing, say you do not know. 
-      Please, do not provide the answer without having the relevant context.
-    `,
+      Rules:
+      - Use the provided Context as the single source of truth.
+      - Do not use external knowledge.
+      - Do not invent policies, procedures, or company rules.
+      - Chat history may clarify the question, but it must not override Context.
+      - If the answer is not supported by Context, say:
+      "I could not find this information in the provided documents."
+      - Be concise, professional, and clear.
+      `,
     ],
-
     [
       "human",
       `
       Context:
       {context}
 
-      Chat history and past messages within current chat:
+      Chat history:
       {chat_history}
 
       Question:
       {input}
-    `,
+      `,
     ],
   ]);
 
-  const ragContext = findRelevantContent(input);
+  const formatContext = (docs: RetrievalResult[]) => {
+    return docs
+      .map((doc) => {
+        return `
+      [Document: ${doc.file_id} | score: ${doc.similarity?.toFixed(3)}]
+
+      ${doc.content}
+      `.trim();
+      })
+      .join("\n\n---\n\n");
+  };
+
+  const ragContext = await findRelevantContent(input);
+  const formattedContext = formatContext(ragContext);
 
   const formattedPrompt = await hrPrompt.format({
-    context: ragContext,
+    context: formattedContext,
     input: input,
     chat_history: chatHistory,
   });

@@ -14,7 +14,7 @@ type AppShellProps = {
 export default function App({ children }: AppShellProps) {
   const pathname = usePathname();
   const hideNavbar = pathname === "/login";
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <main className="flex h-screen w-full overflow-hidden">

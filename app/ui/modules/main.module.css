@@ -23,7 +23,6 @@
   align-items: center;
   font-weight: 500;
   height: 37.5px;
-  font-size: small;
 }
 
 .label {
@@ -36,7 +35,6 @@
   align-items: center;
   font-weight: 500;
   height: 37.5px;
-  font-size: small;
 }
 
 .btn-main {
@@ -50,7 +48,6 @@
   align-items: center;
   font-weight: 500;
   height: 37.5px;
-  font-size: small;
   color: white;
   width: fit-content;
 }
@@ -66,7 +63,6 @@
   align-items: center;
   font-weight: 500;
   height: 37.5px;
-  font-size: small;
   color: white;
   width: fit-content;
 }
